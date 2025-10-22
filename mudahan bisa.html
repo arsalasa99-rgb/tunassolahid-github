@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tunassolah.id — Tumbuh Sehat, Cerdas, dan Bahagia</title>
+  <meta name="description" content="Platform digital NTB untuk memantau gizi, belajar pola hidup sehat, dan membangun komunitas keluarga peduli stunting berbasis budaya lokal Sasak." />
+  <meta name="theme-color" content="#7A1B26" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --bordo: #7A1B26;
+      --emas: #E1B400;
+      --toska: #0BA68B;
+      --biru-langit: #38BDF8;
+      --fuchsia: #C8479D;
+      --latar: #FFFBF2;
+      --teks-utama: #1E293B;
+      --teks-sekunder: #475569;
+      --putih: #FFFFFF;
+      --radius-besar: 1.5rem; /* 24px */
+      --radius-kecil: 1rem; /* 16px */
+      --bayangan: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+      --bayangan-dalam: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    }
+    
+    /* Pola Tenun Sasak sebagai Latar Belakang */
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--latar);
+        color: var(--teks-utama);
+        background-image: 
+            linear-gradient(135deg, rgba(122, 27, 38, 0.03) 25%, transparent 25%),
+            linear-gradient(225deg, rgba(122, 27, 38, 0.03) 25%, transparent 25%),
+            linear-gradient(45deg, rgba(122, 27, 38, 0.03) 25%, transparent 25%),
+            linear-gradient(315deg, rgba(122, 27, 38, 0.03) 25%, transparent 25%);
+        background-position: 10px 0, 10px 0, 0 0, 0 0;
+        background-size: 20px 20px;
+        background-repeat: repeat;
+    }
+
+    /* Kustomisasi Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: var(--latar);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(122, 27, 38, 0.3);
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--bordo);
+    }
+
+    /* Transisi Halus */
+    * {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .app-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      background: linear-gradient(180deg, var(--putih), #FFFCF5 80%);
+      border-right: 1px solid rgba(0,0,0,0.07);
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .brand .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-kecil);
+      background: var(--bordo);
+      display: grid;
+      place-items: center;
+      color: var(--emas);
+      font-weight: 800;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--bordo);
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex-grow: 1;
+    }
+
+    .nav-button {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      border: 0;
+      border-radius: var(--radius-kecil);
+      cursor: pointer;
+      background: transparent;
+      color: var(--teks-sekunder);
+      text-align: left;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .nav-button:hover {
+      background: rgba(122, 27, 38, 0.05);
+      color: var(--bordo);
+    }
+    .nav-button.active {
+      background: var(--bordo);
+      color: var(--putih);
+      box-shadow: var(--bayangan);
+    }
+    .nav-button svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .ai-separator {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(0,0,0,0.1);
+    }
+    .nav-button.ai-button {
+      background-image: linear-gradient(90deg, var(--biru-langit), #67cff7);
+      color: var(--putih);
+    }
+     .nav-button.ai-button:hover {
+        transform: scale(1.02);
+     }
+    
+    .main-content {
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-kecil);
+      font-weight: 800;
+      cursor: pointer;
+      border: 2px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--bayangan);
+    }
+    .btn-masuk { background-color: transparent; color: var(--bordo); border-color: var(--bordo); }
+    .btn-daftar { background-color: var(--bordo); color: var(--putih); }
+    
+    .section-content { display: none; }
+    .section-content.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .card {
+        background-color: var(--putih);
+        border-radius: var(--radius-besar);
+        padding: 2rem;
+        box-shadow: var(--bayangan);
+    }
+    
+    /* Tombol Utama */
+    .btn-utama {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border-radius: var(--radius-besar);
+    }
+    .btn-pantau { background-color: var(--toska); color: var(--putih); }
+    .btn-belajar { background-color: var(--emas); color: var(--teks-utama); }
+    
+    /* Statistik Dinamis */
+    .stat-card {
+        text-align: center;
+        background: linear-gradient(145deg, #ffffff, #f7f3e8);
+        border: 1px solid rgba(225, 180, 0, 0.2);
+    }
+    .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--bordo);
+    }
+    
+    /* Sub-fitur navigasi / bottom bar */
+    .feature-tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        flex-wrap: wrap;
+    }
+    .tab-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-kecil);
+        font-weight: 700;
+        cursor: pointer;
+        background-color: transparent;
+        color: var(--teks-sekunder);
+        border: 2px solid transparent;
+    }
+    .tab-button.active {
+        color: var(--bordo);
+        background-color: rgba(122, 27, 38, 0.05);
+        border-color: rgba(122, 27, 38, 0.1);
+    }
+    .sub-feature-content {
+        display: none;
+    }
+    .sub-feature-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    /* GiziNusa Map */
+    #ntb-map svg path:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+        cursor: pointer;
+    }
+
+    /* GenSolah Game */
+    .avatar-card {
+        background: linear-gradient(135deg, var(--biru-langit), var(--fuchsia));
+        color: var(--putih);
+    }
+
+    /* Berajah - Warung Mitos & Fakta */
+    .flip-card {
+        background-color: transparent;
+        perspective: 1000px;
+        min-height: 250px;
+    }
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        border-radius: var(--radius-besar);
+    }
+    .flip-card-front {
+        background: linear-gradient(135deg, #fff, #eef);
+        border: 2px dashed var(--fuchsia);
+    }
+    .flip-card-back {
+        background: linear-gradient(135deg, var(--putih), #effaf8);
+        border: 2px solid var(--toska);
+        transform: rotateY(180deg);
+    }
+    
+    /* Tombol SOS */
+    .sos-button {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: #DC2626;
+      color: white;
+      display: grid;
+      place-items: center;
+      border: none;
+      box-shadow: 0 0 0 0 rgba(220, 38, 38, 1);
+      animation: pulse 2s infinite;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .sos-button:hover {
+        animation: none;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+    
+    /* Modal Umum */
+    .modal {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none; /* diubah oleh JS */
+        place-items: center;
+        z-index: 2000;
+        padding: 1rem;
+    }
+    .modal.active { display: grid; }
+    .modal-content {
+        background-color: var(--putih);
+        padding: 2.5rem;
+        border-radius: var(--radius-besar);
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* Footer */
+    footer {
+        margin-top: 3rem;
+        padding: 2rem;
+        background-color: var(--bordo);
+        color: rgba(255, 255, 255, 0.8);
+        border-radius: var(--radius-besar);
+        position: relative;
+        overflow: hidden;
+    }
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background-image: linear-gradient(45deg, var(--emas) 25%, transparent 25%, transparent 75%, var(--emas) 75%, var(--emas)), 
+                          linear-gradient(-45deg, var(--emas) 25%, transparent 25%, transparent 75%, var(--emas) 75%, var(--emas));
+        background-size: 16px 16px;
+    }
+    
+    /* Asri AI Chat */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 70vh;
+        max-height: 800px;
+        background-color: var(--putih);
+        border-radius: var(--radius-besar);
+        box-shadow: var(--bayangan);
+        overflow: hidden;
+    }
+    .chat-header {
+        padding: 1rem 1.5rem;
+        background: linear-gradient(90deg, var(--biru-langit), #89d8fb);
+        color: var(--putih);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .chat-messages {
+        flex-grow: 1;
+        padding: 1.5rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .message {
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius-kecil);
+        max-width: 80%;
+        line-height: 1.6;
+    }
+    .message.user {
+        background-color: var(--bordo);
+        color: var(--putih);
+        align-self: flex-end;
+        border-bottom-right-radius: 0.25rem;
+    }
+    .message.ai {
+        background-color: #f1f5f9;
+        color: var(--teks-utama);
+        align-self: flex-start;
+        border-bottom-left-radius: 0.25rem;
+    }
+    .chat-input-area {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+    .chat-input-area input {
+        flex-grow: 1;
+        padding: 0.75rem 1.25rem;
+        border-radius: var(--radius-kecil);
+        border: 1px solid #cbd5e1;
+        background-color: #f8fafc;
+    }
+    .chat-input-area input:focus {
+        outline: 2px solid var(--biru-langit);
+        border-color: transparent;
+    }
+    
+    /* ======================================= */
+    /* STYLES RESPONSIVE INTI         */
+    /* ======================================= */
+    @media (max-width: 1200px) {
+        .app-container {
+            grid-template-columns: 240px 1fr;
+        }
+    }
+    @media (max-width: 1024px) {
+        .app-container {
+            grid-template-columns: 90px 1fr;
+        }
+        .brand-text { display: none; }
+        .brand .logo { margin: 0 auto; }
+        .nav-button span { display: none; }
+        .nav-button { justify-content: center; padding: 1rem; }
+        .sidebar { padding: 1.5rem 1rem; }
+    }
+    /* Ini adalah breakpoint utama untuk tampilan mobile */
+    @media (max-width: 768px) {
+        .app-container {
+            grid-template-columns: 1fr;
+        }
+        .sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: auto;
+            height: 70px;
+            width: 100%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0.5rem;
+            border-top: 1px solid rgba(0,0,0,0.07);
+            z-index: 100;
+            background: var(--putih);
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+        }
+        .brand { display: none; }
+        .nav-menu { flex-direction: row; gap: 0.2rem; width: 100%;}
+        .nav-button { 
+            flex-direction: column; 
+            font-size: 0.7rem; 
+            gap: 0.2rem; 
+            padding: 0.5rem; 
+            height: 100%; 
+            flex: 1;
+        }
+        .nav-button svg { width: 20px; height: 20px; }
+        .nav-button.ai-button { display: none; } /* Sembunyikan AI di mobile nav bawah */
+        .main-content { 
+            /* Tambah padding bawah agar konten tidak tertutup nav mobile */
+            padding: 1.5rem 1rem 90px 1rem; 
+        }
+        header { 
+            flex-direction: column; 
+            gap: 1rem; 
+            align-items: stretch; 
+            text-align: center;
+        }
+        .header-buttons { justify-content: center; }
+        
+        .card { padding: 1.5rem; }
+        
+        .stat-number { font-size: 2.5rem; }
+
+        .sos-button { 
+            bottom: 90px; /* Naikkan posisi agar tidak terlalu mepet nav */
+            right: 1rem; 
+            width: 60px; 
+            height: 60px;
+        }
+        
+        .modal-content {
+             padding: 1.5rem;
+        }
+
+        .btn-utama {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .hero-image {
+            order: -1; /* Pindahkan gambar ke atas di mobile */
+            margin-bottom: 2rem;
+        }
+    }
+    
+    /* Helper classes */
+    .hidden { display: none !important; }
+
+  </style>
+
+  <!-- =============================================== -->
+  <!-- CSS TAMBAHAN (APPEND-ONLY) -->
+  <!-- =============================================== -->
+  <style id="ts-styles">
+    /* General Additions */
+    .ts-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px dashed rgba(0,0,0,0.1);
+    }
+    .ts-hidden {
+        display: none !important;
+    }
+    .ts-btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-kecil);
+        font-weight: 700;
+        cursor: pointer;
+        border: 2px solid transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    .ts-btn:hover {
+        transform: translateY(-2px);
+    }
+    .ts-input, .ts-select, .ts-radio-group, .ts-toggle-group {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-kecil);
+        border: 1px solid #cbd5e1;
+        background-color: var(--putih);
+    }
+    .ts-input:focus, .ts-select:focus {
+        outline: 2px solid var(--bordo);
+        border-color: transparent;
+    }
+    .ts-card {
+        background-color: var(--putih);
+        border-radius: var(--radius-besar);
+        padding: 2rem;
+        box-shadow: var(--bayangan);
+    }
+    .ts-modal {
+        position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6);
+        display: none; place-items: center; z-index: 3000; padding: 1rem;
+    }
+    .ts-modal.ts-active { display: grid; }
+    .ts-modal-content {
+        background-color: var(--putih); padding: 2.5rem; border-radius: var(--radius-besar);
+        max-width: 600px; width: 100%; text-align: left; position: relative;
+    }
+
+    /* GiziNusa */
+    .ts-gizinusa-kalori-card {
+        border: 2px solid var(--emas);
+        background: linear-gradient(135deg, #fff, #fffbeb);
+    }
+    .ts-gizinusa-riwayat-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    .ts-gizinusa-riwayat-table th, .ts-gizinusa-riwayat-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .ts-gizinusa-riwayat-table th {
+        background-color: #f8fafc;
+        font-weight: 700;
+    }
+    .ts-text-green { color: #16a34a; }
+    .ts-text-red { color: #dc2626; }
+
+    /* GenSolah */
+    .ts-mangan-progress-bar-bg {
+        width: 100%; background-color: #e5e7eb; border-radius: 9999px; height: 1.25rem;
+        overflow: hidden; box-shadow: var(--bayangan-dalam);
+    }
+    .ts-mangan-progress-bar {
+        background: linear-gradient(90deg, var(--emas), #facc15);
+        height: 100%; border-radius: 9999px;
+    }
+    .ts-leaderboard-list { list-style-type: decimal; padding-left: 1.5rem; }
+
+    /* Berajah */
+    .ts-berajah-kuis { border: 2px dashed var(--emas); }
+    .ts-sertifikat-canvas { display: none; }
+    
+    /* Semeton */
+    .ts-user-badge {
+        background-color: rgba(122, 27, 38, 0.1);
+        color: var(--bordo);
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    .ts-comment {
+        padding: 0.75rem;
+        background-color: #f8fafc;
+        border-radius: var(--radius-kecil);
+    }
+    .ts-comment-author { font-weight: 700; color: var(--teks-utama); }
+    .ts-kisah-reaksi button {
+        background: transparent; border: none; cursor: pointer;
+        display: flex; align-items: center; gap: 0.5rem;
+        color: var(--teks-sekunder);
+    }
+    .ts-kisah-reaksi button.ts-liked svg {
+      fill: #ef4444;
+      color: #ef4444;
+    }
+    
+    /* Paonta */
+    .ts-meal-plan-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .ts-meal-plan-table th, .ts-meal-plan-table td { padding: 0.75rem; text-align: left; border: 1px solid #e2e8f0; }
+    .ts-meal-plan-table th { background-color: var(--toska); color: white; }
+
+    /* Asri AI (Floating Chat) - FIX: Button Overlap */
+    #ts-asri-toggle {
+        position: fixed; bottom: 2rem; right: calc(2rem + 70px + 1rem); /* Move left of SOS button */
+        width: 60px; height: 60px; border-radius: 50%;
+        background: linear-gradient(45deg, var(--biru-langit), #67cff7);
+        color: white; display: grid; place-items: center;
+        border: none; box-shadow: var(--bayangan); cursor: pointer;
+        z-index: 1900;
+        animation: ts-pulse-blue 2s infinite;
+    }
+    @media (max-width: 768px) {
+      #ts-asri-toggle {
+        right: calc(1rem + 60px + 0.5rem); /* Adjust for mobile SOS button */
+        bottom: 90px; /* Align vertically with SOS button */
+      }
+    }
+
+    @keyframes ts-pulse-blue {
+      0% { transform: scale(0.95); }
+      70% { transform: scale(1.05); }
+      100% { transform: scale(0.95); }
+    }
+    #ts-asri-panel {
+        position: fixed; bottom: 90px; right: 2rem;
+        width: 90%; max-width: 400px;
+        height: 70vh; max-height: 500px;
+        z-index: 1800;
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        pointer-events: none;
+    }
+    #ts-asri-panel.ts-active {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .ts-chat-recommendations { display: flex; gap: 0.5rem; overflow-x: auto; padding: 0 1.5rem 1.5rem; }
+    .ts-chat-reco-card {
+      background-color: #e0f2fe; color: #0c4a6e;
+      padding: 0.5rem 1rem; border-radius: 9999px;
+      font-size: 0.9rem; font-weight: 500;
+      white-space: nowrap; cursor: pointer;
+    }
+
+  </style>
+  
+  <!-- =============================================== -->
+  <!-- CSS BARU UNTUK PENGATURAN -->
+  <!-- =============================================== -->
+  <style id="ts-settings-styles">
+    /* Settings Page Layout */
+    .ts-settings-container {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 2rem;
+    }
+    .ts-settings-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .ts-settings-nav button {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-kecil);
+        text-align: left;
+        font-weight: 700;
+        background-color: transparent;
+        color: var(--teks-sekunder);
+        border: none;
+        cursor: pointer;
+    }
+    .ts-settings-nav button.active {
+        background-color: rgba(122, 27, 38, 0.05);
+        color: var(--bordo);
+    }
+    .ts-settings-content {
+        display: none;
+    }
+    .ts-settings-content.active {
+        display: block;
+        animation: fadeIn 0.5s;
+    }
+    .ts-form-group {
+        margin-bottom: 1.5rem;
+    }
+    .ts-form-group label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Toggle Switch */
+    .ts-toggle-switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-kecil);
+        border: 1px solid #cbd5e1;
+        cursor: pointer;
+    }
+    .ts-toggle-switch input { display: none; }
+    .ts-toggle-slider {
+        position: relative;
+        cursor: pointer;
+        width: 50px; height: 28px;
+        background-color: #ccc;
+        border-radius: 28px;
+        transition: background-color 0.2s;
+    }
+    .ts-toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 20px; width: 20px;
+        left: 4px; bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.2s;
+    }
+    .ts-toggle-switch input:checked + .ts-toggle-slider {
+        background-color: var(--toska);
+    }
+    .ts-toggle-switch input:checked + .ts-toggle-slider:before {
+        transform: translateX(22px);
+    }
+
+    /* PIN Lock Overlay */
+    #ts-pin-overlay {
+        position: fixed; inset: 0;
+        background-color: rgba(255, 251, 242, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 9999;
+        display: none; /* diubah oleh js */
+        place-items: center;
+    }
+     #ts-pin-overlay.active {
+        display: grid;
+     }
+    .ts-pin-box {
+        background-color: var(--putih);
+        padding: 2.5rem;
+        border-radius: var(--radius-besar);
+        width: 90%; max-width: 350px;
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+    }
+    .ts-pin-input {
+        font-size: 2rem;
+        letter-spacing: 1rem;
+        text-align: center;
+        border-radius: var(--radius-kecil);
+        border: 1px solid #cbd5e1;
+        padding: 0.5rem;
+        width: 100%;
+        margin-top: 1rem;
+        background-color: transparent; /* agar tembus pandang di dark mode */
+    }
+
+    /* Theme & Accessibility */
+    body.ts-dark-theme {
+      --latar: #0f172a;
+      --teks-utama: #e2e8f0;
+      --teks-sekunder: #94a3b8;
+      --putih: #1e293b;
+      --bayangan: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+    body.ts-dark-theme, body.ts-dark-theme .sidebar {
+      background-image: none; /* Matikan tenun di mode gelap agar tidak ramai */
+    }
+    body.ts-dark-theme .card,
+    body.ts-dark-theme .ts-card, 
+    body.ts-dark-theme .sidebar, 
+    body.ts-dark-theme .modal-content, 
+    body.ts-dark-theme .ts-pin-box,
+    body.ts-dark-theme footer {
+      border: 1px solid #334155;
+    }
+    body.ts-dark-theme .stat-card {
+      background: linear-gradient(145deg, #1e293b, #283449);
+    }
+    body.ts-dark-theme .ts-input, body.ts-dark-theme .ts-select {
+        background-color: #334155;
+        border-color: #475569;
+        color: var(--teks-utama);
+    }
+    body.ts-dark-theme .nav-button:hover {
+      background: rgba(148, 163, 184, 0.1);
+    }
+    body.ts-dark-theme .nav-button.active {
+      background: var(--bordo);
+    }
+     body.ts-dark-theme .ts-settings-nav button.active {
+        background-color: rgba(148, 163, 184, 0.1);
+    }
+    body.ts-dark-theme ::-webkit-scrollbar-track {
+        background: #0f172a;
+    }
+    body.ts-dark-theme ::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.3);
+    }
+    body.ts-dark-theme .flip-card-front {
+        background: linear-gradient(135deg, #2c3a4f, #334155);
+        border-color: var(--fuchsia);
+    }
+    body.ts-dark-theme .flip-card-back {
+        background: linear-gradient(135deg, #2c3a4f, #334155);
+        border-color: var(--toska);
+    }
+    
+    body.ts-rtl { direction: rtl; }
+    body.ts-rtl .sidebar { border-right: none; border-left: 1px solid rgba(0,0,0,0.07); }
+    body.ts-rtl .nav-button { text-align: right; }
+    body.ts-large-font { font-size: 110%; }
+    body.ts-reduce-motion *, body.ts-reduce-motion *::before, body.ts-reduce-motion *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Responsive Settings Page */
+    @media (max-width: 768px) {
+        .ts-settings-container {
+            grid-template-columns: 1fr;
+        }
+        .ts-settings-nav {
+            flex-direction: row;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            scrollbar-width: none; /* Firefox */
+        }
+        .ts-settings-nav::-webkit-scrollbar { display: none; } /* Chrome, Safari */
+        .ts-card {
+            padding: 1.5rem;
+        }
+    }
+  </style>
+
+</head>
+<body class=""> <!-- Class tema ditambahkan oleh JS -->
+  
+  <!-- PIN Lock Overlay -->
+  <div id="ts-pin-overlay">
+      <div class="ts-pin-box">
+          <h3 class="text-2xl font-bold" data-lang-key="pin_masukkan">Masukkan PIN</h3>
+          <p class="mt-2 text-gray-500" data-lang-key="pin_info">Aplikasi ini dilindungi.</p>
+          <input type="password" id="ts-pin-input" class="ts-pin-input" maxlength="4" pattern="\d{4}" autocomplete="off">
+          <p id="ts-pin-error" class="text-red-500 text-sm mt-2 ts-hidden" data-lang-key="pin_salah">PIN salah, coba lagi.</p>
+      </div>
+  </div>
+
+  <div class="app-container">
+    <!-- Tombol Darurat SOS -->
+    <button id="sos-btn" class="sos-button" title="Tombol Tanggap Gizi Darurat">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 5a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0V8a1 1 0 0 0-1-1zm0 8a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+        <span class="sr-only">SOS</span>
+    </button>
+    
+    <!-- Modal SOS -->
+    <div id="sos-modal" class="modal">
+        <div class="modal-content">
+            <div class="text-center">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                    <svg class="h-10 w-10 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" />
+                    </svg>
+                </div>
+                <h3 class="mt-4 text-2xl font-bold">Tanggap Gizi Darurat</h3>
+                <p class="mt-2 text-gray-500">Pilih tindakan cepat yang Anda butuhkan. Tetap tenang.</p>
+            </div>
+            <div class="mt-8 grid grid-cols-1 gap-4">
+                <a href="tel:119" class="btn bg-red-600 text-white hover:bg-red-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    Panggil Bantuan (PSC 119)
+                </a>
+                <button id="ts-share-location-btn" class="btn bg-blue-500 text-white hover:bg-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Bagikan Lokasi Saya
+                </button>
+                 <button id="ts-poison-guide-btn" class="btn bg-gray-100 text-gray-800 hover:bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    Panduan Keracunan
+                </button>
+            </div>
+            <button id="close-sos-modal" class="mt-8 text-sm font-semibold text-gray-500 hover:text-gray-700">Tutup</button>
+        </div>
+    </div>
+    
+    <!-- Modal Masuk/Daftar -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content relative max-w-md text-left">
+            <button id="close-auth-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            
+            <!-- Login Form -->
+            <div id="login-form">
+                <h3 class="text-2xl font-bold mb-1">Selamat Datang Kembali!</h3>
+                <p class="text-gray-500 mb-6">Masuk untuk melanjutkan perjalanan sehat keluarga Anda.</p>
+                <form class="space-y-4">
+                    <div>
+                        <label for="login-email" class="font-bold block mb-2">Email</label>
+                        <input type="email" id="login-email" class="w-full p-3 border rounded-lg" placeholder="nama@email.com">
+                    </div>
+                    <div>
+                        <label for="login-password" class="font-bold block mb-2">Kata Sandi</label>
+                        <input type="password" id="login-password" class="w-full p-3 border rounded-lg" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-daftar w-full">Masuk</button>
+                </form>
+                <p class="text-center text-sm text-gray-500 mt-6">
+                    Belum punya akun? <a href="#" id="show-register" class="font-bold hover:underline" style="color: var(--bordo);">Daftar di sini</a>
+                </p>
+            </div>
+
+            <!-- Register Form (hidden by default) -->
+            <div id="register-form" class="hidden">
+                 <h3 class="text-2xl font-bold mb-1">Gabung Bersama Kami!</h3>
+                <p class="text-gray-500 mb-6">Buat akun gratis untuk mulai memantau gizi anak Anda.</p>
+                <form class="space-y-4">
+                     <div>
+                        <label for="reg-name" class="font-bold block mb-2">Nama Lengkap</label>
+                        <input type="text" id="reg-name" class="w-full p-3 border rounded-lg" placeholder="Bunda Hebat">
+                    </div>
+                    <div>
+                        <label for="reg-email" class="font-bold block mb-2">Email</label>
+                        <input type="email" id="reg-email" class="w-full p-3 border rounded-lg" placeholder="nama@email.com">
+                    </div>
+                    <div>
+                        <label for="reg-password" class="font-bold block mb-2">Buat Kata Sandi</label>
+                        <input type="password" id="reg-password" class="w-full p-3 border rounded-lg" placeholder="Minimal 8 karakter">
+                    </div>
+                    <button type="submit" class="btn btn-daftar w-full">Buat Akun</button>
+                </form>
+                <p class="text-center text-sm text-gray-500 mt-6">
+                    Sudah punya akun? <a href="#" id="show-login" class="font-bold hover:underline" style="color: var(--bordo);">Masuk di sini</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Sidebar Navigasi -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">TS</div>
+        <div class="brand-text">
+          <h1>tunassolah.id</h1>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <button data-target="beranda" class="nav-button active">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span data-lang-key="beranda">Beranda</span>
+        </button>
+        <button data-target="gizinusa" class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20V16"/></svg>
+            <span data-lang-key="gizinusa">GiziNusa</span>
+        </button>
+        <button data-target="gensolah" class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            <span data-lang-key="gensolah">GenSolah</span>
+        </button>
+        <button data-target="berajah" class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            <span data-lang-key="berajah">Berajah</span>
+        </button>
+        <button data-target="semeton" class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span data-lang-key="semeton">Semeton</span>
+        </button>
+        <button data-target="paonta" class="nav-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2"/><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20 10 10 0 0 0 0-20z"/></svg>
+            <span data-lang-key="paonta">Paonta</span>
+        </button>
+        <!-- Tombol Pengaturan BARU -->
+        <button id="ts-settings-btn" data-target="ts-settings" class="nav-button">
+             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+             <span data-lang-key="pengaturan">Pengaturan</span>
+        </button>
+
+        <div class="ai-separator"></div>
+        <button data-target="asriai" class="nav-button ai-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="8" height="8" rx="2"/><path d="M8 12v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2"/><path d="m14 15-2 2-2-2"/></svg>
+            <span data-lang-key="asriai">Tanya Asri AI</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Konten Utama -->
+    <main class="main-content">
+      <header>
+        <div id="page-title">
+            <h2 class="text-2xl sm:text-3xl font-bold" data-lang-key="beranda_title">Beranda</h2>
+            <p class="text-gray-500 mt-1" data-lang-key="beranda_subtitle">Selamat datang, Bunda Hebat!</p>
+        </div>
+        <div class="header-buttons">
+          <button class="btn btn-masuk" data-lang-key="masuk">Masuk</button>
+          <button class="btn btn-daftar" data-lang-key="daftar">Daftar</button>
+        </div>
+      </header>
+      
+      <!-- ==================== BERANDA ==================== -->
+      <section id="beranda" class="section-content active">
+          <div class="card bg-gradient-to-br from-white to-yellow-50 p-6 md:p-10">
+              <div class="grid md:grid-cols-12 gap-6 md:gap-10 items-center">
+                  <div class="md:col-span-7">
+                      <!-- Ukuran font diubah untuk mobile -->
+                      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight" style="color: var(--bordo);" data-lang-key="hero_title">Tumbuh Sehat, Cerdas, dan Bahagia Bersama <span style="color: var(--emas);">tunassolah.id</span>.</h1>
+                      <p class="mt-6 text-base md:text-lg text-gray-600" data-lang-key="hero_subtitle">Platform digital NTB untuk memantau gizi, belajar pola hidup sehat, dan membangun komunitas keluarga peduli stunting.</p>
+                      <div class="mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
+                          <button class="btn btn-utama btn-pantau" onclick="navigateTo('gizinusa')">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                              <span data-lang-key="pantauGizi">Pantau Gizi Sekarang</span>
+                          </button>
+                          <button class="btn btn-utama btn-belajar" onclick="navigateTo('berajah')">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="14 2 18 6 7 17 3 17 3 13 14 2"/><line x1="3" x2="21" y1="22" y2="22"/></svg>
+                              <span data-lang-key="mulaiBelajar">Mulai Belajar di Berajah</span>
+                          </button>
+                      </div>
+                  </div>
+                  <div class="md:col-span-5 hero-image">
+                      <img src="https://placehold.co/600x450/7A1B26/E1B400?text=Keluarga+Sehat+NTB" alt="Ilustrasi Keluarga Sehat NTB" class="rounded-2xl shadow-xl w-full h-auto object-cover">
+                  </div>
+              </div>
+          </div>
+          
+          <div class="mt-12">
+              <div class="grid md:grid-cols-2 gap-8">
+                  <div class="card">
+                      <h3 class="text-xl sm:text-2xl font-bold mb-4 text-center" style="color: var(--bordo);" data-lang-key="visi_title">Visi Kami</h3>
+                      <p class="text-center text-gray-600 md:text-lg" data-lang-key="visi_text">"Mewujudkan NTB bebas stunting melalui sinergi teknologi modern dan kearifan budaya lokal Sasak."</p>
+                  </div>
+                  <div class="card">
+                      <h3 class="text-xl sm:text-2xl font-bold mb-4 text-center" style="color: var(--bordo);" data-lang-key="misi_title">Misi Kami</h3>
+                      <ul class="list-disc list-inside space-y-2 text-gray-600">
+                          <li data-lang-key="misi_1">Pemantauan gizi anak yang mudah, akurat, dan terpusat.</li>
+                          <li data-lang-key="misi_2">Edukasi keluarga tentang 1000 HPK berbasis konten lokal.</li>
+                          <li data-lang-key="misi_3">Membentuk gaya hidup sehat dan aktif untuk Gen Z.</li>
+                          <li data-lang-key="misi_4">Mengoptimalkan pemanfaatan pangan lokal NTB.</li>
+                          <li data-lang-key="misi_5">Menyediakan sistem tanggap darurat gizi yang responsif.</li>
+                          <li data-lang-key="misi_6">Memanfaatkan AI untuk rekomendasi gizi personal.</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div class="card stat-card">
+                  <div class="stat-number">10.000+</div>
+                  <p class="mt-2 font-bold" data-lang-key="stat_1">Keluarga Terdaftar</p>
+              </div>
+              <div class="card stat-card">
+                  <div class="stat-number">250+</div>
+                  <p class="mt-2 font-bold" data-lang-key="stat_2">Kader Aktif Terhubung</p>
+              </div>
+              <div class="card stat-card">
+                  <div class="stat-number">35%</div>
+                  <p class="mt-2 font-bold" data-lang-key="stat_3">Peningkatan Kesadaran Gizi</p>
+              </div>
+          </div>
+      </section>
+      
+      <!-- ==================== GIZINUSA ==================== -->
+      <section id="gizinusa" class="section-content">
+          <div class="grid lg:grid-cols-3 gap-8">
+              <div class="lg:col-span-2 card">
+                  <h3 class="text-xl sm:text-2xl font-bold mb-4">Dasbor Pertumbuhan Anak</h3>
+                  <p class="mb-6 text-gray-500">Masukkan data anak Anda untuk melihat status gizi dan perkembangannya. Data tersimpan aman dan hanya bisa diakses oleh Anda.</p>
+                  
+                  <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200">
+                      <div class="grid md:grid-cols-2 gap-6">
+                          <div>
+                              <label for="anak-nama" class="font-bold block mb-2">Nama Anak</label>
+                              <input type="text" id="anak-nama" placeholder="Contoh: Zulaikha" class="w-full p-3 border rounded-lg">
+                          </div>
+                          <div>
+                              <label for="anak-tgl-lahir" class="font-bold block mb-2">Tanggal Lahir</label>
+                              <input type="date" id="anak-tgl-lahir" class="w-full p-3 border rounded-lg">
+                          </div>
+                          <div>
+                              <label for="anak-berat" class="font-bold block mb-2">Berat Badan (kg)</label>
+                              <input type="number" id="anak-berat" placeholder="Contoh: 10.5" class="w-full p-3 border rounded-lg">
+                          </div>
+                          <div>
+                              <label for="anak-tinggi" class="font-bold block mb-2">Tinggi/Panjang Badan (cm)</label>
+                              <input type="number" id="anak-tinggi" placeholder="Contoh: 80" class="w-full p-3 border rounded-lg">
+                          </div>
+                           <div class="md:col-span-2">
+                              <label class="font-bold block mb-2">Jenis Kelamin</label>
+                              <div class="flex gap-4">
+                                  <label class="flex items-center gap-2"><input type="radio" name="gender" class="form-radio" value="l"> Laki-laki</label>
+                                  <label class="flex items-center gap-2"><input type="radio" name="gender" class="form-radio" value="p"> Perempuan</label>
+                              </div>
+                          </div>
+                      </div>
+                      <button id="ts-hitung-gizi-btn" class="btn btn-pantau w-full mt-6">Hitung Status Gizi & Simpan</button>
+                  </div>
+                  
+                  <div class="mt-8">
+                       <h4 class="text-xl font-bold mb-4">Grafik Perkembangan Bulanan (BB/U)</h4>
+                       <div class="bg-white p-4 rounded-xl shadow-inner border">
+                           <canvas id="growthChart"></canvas>
+                       </div>
+                  </div>
+              </div>
+              
+              <div class="space-y-8">
+                  <div class="card">
+                      <h4 class="text-xl font-bold mb-2">Status Gizi Saat Ini</h4>
+                      <div id="ts-gizi-status-card" class="p-4 text-center bg-gray-100 text-gray-800 rounded-lg">
+                          <p class="font-bold text-lg">Belum Dihitung</p>
+                          <p class="text-sm">(Masukkan data anak & hitung)</p>
+                      </div>
+                      <button class="btn bg-gray-700 text-white w-full mt-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                        Ekspor e-KMS (PDF)
+                      </button>
+                  </div>
+                  <div class="card">
+                      <h4 class="text-xl font-bold mb-4">Peta Prevalensi Stunting NTB</h4>
+                       <div id="ntb-map" class="w-full h-auto">
+                           <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                                <title>Peta Kabupaten di NTB</title>
+                                <path id="lotim" fill="#4ade80" d="M450,150 L550,120 L600,200 L500,220 z" data-name="Lombok Timur" data-prevalence="15.2% (Hijau)"></path>
+                                <path id="loteng" fill="#facc15" d="M350,160 L445,145 L495,215 L400,230 z" data-name="Lombok Tengah" data-prevalence="28.7% (Kuning)"></path>
+                                <path id="lobar" fill="#4ade80" d="M280,170 L345,155 L395,225 L320,240 z" data-name="Lombok Barat" data-prevalence="18.1% (Hijau)"></path>
+                                <path id="klu" fill="#f87171" d="M290,120 L380,110 L340,150 L285,150 z" data-name="Kabupaten Lombok Utara" data-prevalence="32.5% (Merah)"></path>
+                                <path id="mataram" fill="#4ade80" d="M260,180 L275,165 L290,185 L270,195 z" data-name="Kota Mataram" data-prevalence="14.5% (Hijau)"></path>
+                                <text x="500" y="180" font-family="Arial" font-size="12" fill="black">Lombok Timur</text>
+                                <text x="380" y="190" font-family="Arial" font-size="12" fill="black">Lombok Tengah</text>
+                                <text x="310" y="200" font-family="Arial" font-size="12" fill="black">Lombok Barat</text>
+                           </svg>
+                       </div>
+                       <div id="map-tooltip" class="mt-4 text-center p-2 bg-gray-100 rounded-lg text-sm hidden"></div>
+                  </div>
+              </div>
+          </div>
+          <div id="ts-gizinusa-kalori" class="ts-section">
+            <div class="ts-card">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4">Kalkulator Kebutuhan Kalori Harian Anak</h3>
+              <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label for="ts-kalori-usia" class="font-bold block mb-2">Usia Anak (tahun)</label>
+                  <input type="number" id="ts-kalori-usia" class="ts-input" placeholder="Contoh: 3">
+                </div>
+                <div>
+                  <label for="ts-kalori-berat" class="font-bold block mb-2">Berat Badan (kg)</label>
+                  <input type="number" id="ts-kalori-berat" class="ts-input" placeholder="Contoh: 14">
+                </div>
+                <div>
+                  <label class="font-bold block mb-2">Jenis Kelamin</label>
+                  <select id="ts-kalori-gender" class="ts-select">
+                    <option value="l">Laki-laki</option>
+                    <option value="p">Perempuan</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="font-bold block mb-2">Tingkat Aktivitas</label>
+                  <select id="ts-kalori-aktivitas" class="ts-select">
+                    <option value="1.2">Sangat jarang (bedrest)</option>
+                    <option value="1.375">Ringan (bermain tenang)</option>
+                    <option value="1.55">Sedang (aktif bermain)</option>
+                    <option value="1.725">Sangat Aktif (olahraga, sangat aktif)</option>
+                  </select>
+                </div>
+              </div>
+              <button id="ts-kalori-hitung-btn" class="ts-btn w-full mt-6" style="background-color: var(--emas); color: var(--teks-utama);">Hitung Kebutuhan Kalori</button>
+              <div id="ts-kalori-hasil" class="mt-6 ts-hidden">
+                <div class="ts-card ts-gizinusa-kalori-card">
+                  <h4 class="text-xl font-bold mb-2 text-center">Estimasi Kebutuhan Gizi Harian</h4>
+                  <p id="ts-kalori-hasil-total" class="text-center text-3xl font-extrabold" style="color: var(--bordo);">1,350 kkal</p>
+                  <div id="ts-kalori-hasil-makro" class="mt-4 grid grid-cols-3 gap-4 text-center">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="ts-gizinusa-riwayat" class="ts-section">
+            <div class="ts-card">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4">Riwayat Pertumbuhan Anak</h3>
+              <div class="overflow-x-auto">
+                <table class="ts-gizinusa-riwayat-table">
+                  <thead>
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Tinggi (cm)</th>
+                      <th>Berat (kg)</th>
+                      <th>Status Gizi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ts-riwayat-tbody">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <!-- ==================== GENSOLAH ==================== -->
+      <section id="gensolah" class="section-content">
+        <div class="feature-tabs">
+            <button class="tab-button active" data-target="kalkulator">Kalkulator Berat Ideal</button>
+            <button class="tab-button" data-target="mangan-quest">Mangan Quest Game</button>
+            <button class="tab-button" data-target="forum-genz">Forum GenZ Lombok</button>
+        </div>
+        
+        <div id="gensolah-kalkulator" class="sub-feature-content active">
+            <div class="card max-w-2xl mx-auto" style="background-color: var(--biru-langit);">
+                 <div class="card bg-white p-8">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-1 text-center">Hitung IMT & Kalori Harianmu!</h3>
+                    <p class="text-center text-gray-500 mb-6">Cari tahu berat badan ideal dan kebutuhan energimu untuk tetap aktif.</p>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div>
+                           <label class="font-bold block mb-2">Tinggi Badan (cm)</label>
+                           <input type="number" class="w-full p-3 border rounded-lg">
+                        </div>
+                         <div>
+                           <label class="font-bold block mb-2">Berat Badan (kg)</label>
+                           <input type="number" class="w-full p-3 border rounded-lg">
+                        </div>
+                        <div class="sm:col-span-2">
+                           <label class="font-bold block mb-2">Tingkat Aktivitas</label>
+                           <select class="w-full p-3 border rounded-lg">
+                               <option>Jarang gerak (mager)</option>
+                               <option>Aktivitas ringan (sekolah, jalan santai)</option>
+                               <option>Aktivitas sedang (olahraga 3-4x seminggu)</option>
+                               <option>Sangat aktif (atlet, olahraga tiap hari)</option>
+                           </select>
+                        </div>
+                    </div>
+                    <button class="btn w-full mt-6 text-white" style="background: var(--fuchsia);">Hitung Sekarang</button>
+                 </div>
+            </div>
+        </div>
+
+        <div id="gensolah-mangan-quest" class="sub-feature-content">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card avatar-card text-center p-8">
+                    <h3 class="text-2xl sm:text-3xl font-bold mb-4">Avatar Sehatmu</h3>
+                    <img src="https://placehold.co/200x200/FFFFFF/38BDF8?text=Avatar" alt="Avatar Digital" class="mx-auto rounded-full border-4 border-white shadow-lg mb-4">
+                    <div class="bg-white/20 p-4 rounded-lg">
+                        <p class="font-bold text-xl">Status: Bugar & Semangat!</p>
+                        <div class="w-full bg-gray-200 rounded-full h-4 mt-2">
+                            <div class="bg-green-400 h-4 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <p class="text-sm mt-1">Health Bar: 85/100</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl sm:text-2xl font-bold mb-4">Misi Harian</h3>
+                    <p class="text-gray-500 mb-6">Selesaikan misi di dunia nyata untuk menjaga avatarmu tetap sehat dan dapatkan poin!</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" class="h-6 w-6 rounded text-green-500 focus:ring-green-500" checked>
+                            <div>
+                                <strong class="text-lg">Sarapan Bergizi</strong>
+                                <p class="text-sm text-gray-500">Makan pagi dengan protein dan serat.</p>
+                            </div>
+                            <span class="ml-auto font-bold text-green-600">+10 Poin</span>
+                        </label>
+                        <label class="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" class="h-6 w-6 rounded text-green-500 focus:ring-green-500">
+                            <div>
+                                <strong class="text-lg">Minum 8 Gelas Air</strong>
+                                <p class="text-sm text-gray-500">Jaga tubuhmu tetap terhidrasi.</p>
+                            </div>
+                            <span class="ml-auto font-bold text-green-600">+5 Poin</span>
+                        </label>
+                         <label class="flex items-center gap-4 p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" class="h-6 w-6 rounded text-green-500 focus:ring-green-500">
+                            <div>
+                                <strong class="text-lg">Olahraga 30 Menit</strong>
+                                <p class="text-sm text-gray-500">Bisa lari, sepedaan, atau senam.</p>
+                            </div>
+                            <span class="ml-auto font-bold text-green-600">+15 Poin</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="gensolah-forum-genz" class="sub-feature-content">
+            <div class="max-w-4xl mx-auto">
+                <div class="card mb-8">
+                     <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="Punya ide keren atau tantangan kesehatan? Bagikan di sini..."></textarea>
+                     <div class="text-right mt-4">
+                         <button class="btn text-white" style="background: var(--biru-langit);">Posting</button>
+                     </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="card">
+                        <p class="text-gray-700">Guys, ada ide inovasi makanan sehat dari daun kelor ngga? Pengen coba bikin nugget tapi belum tau resepnya.</p>
+                        <div class="flex items-center justify-between mt-4 text-sm text-gray-500">
+                            <span>- @AnakSehat_MTR</span>
+                            <div class="flex items-center gap-4">
+                                <button class="flex items-center gap-1 hover:text-blue-500"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 15 7-7 7 7"/></svg> 23 Upvotes</button>
+                                <button class="flex items-center gap-1 hover:text-gray-800"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 5 Komentar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ts-section grid md:grid-cols-2 gap-8 items-start">
+            <div id="ts-gensolah-imt" class="ts-card">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4">Kalkulator IMT Cepat</h3>
+              <div class="space-y-4">
+                <div>
+                  <label for="ts-imt-tinggi" class="font-bold block mb-2">Tinggi Badan (cm)</label>
+                  <input type="number" id="ts-imt-tinggi" class="ts-input" placeholder="170">
+                </div>
+                <div>
+                  <label for="ts-imt-berat" class="font-bold block mb-2">Berat Badan (kg)</label>
+                  <input type="number" id="ts-imt-berat" class="ts-input" placeholder="65">
+                </div>
+              </div>
+              <button id="ts-imt-hitung-btn" class="ts-btn w-full mt-6 text-white" style="background-color: var(--fuchsia);">Hitung IMT</button>
+              <div id="ts-imt-hasil" class="mt-4 text-center p-4 rounded-lg ts-hidden">
+              </div>
+            </div>
+
+            <div id="ts-mangan-quest" class="ts-card">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4">Mangan Quest</h3>
+              <div class="text-center mb-4">
+                <p>Poin: <span id="ts-mangan-points" class="font-bold">0</span> | Level: <span id="ts-mangan-level" class="font-bold">1</span></p>
+                <div class="ts-mangan-progress-bar-bg mt-2">
+                  <div id="ts-mangan-progress-bar" class="ts-mangan-progress-bar" style="width: 0%;"></div>
+                </div>
+              </div>
+              <div class="space-y-3">
+                <button data-points="10" class="ts-mangan-misi-btn ts-btn w-full justify-start" style="background-color: #f0fdf4; color: #15803d;">Sarapan Sehat (+10 Poin)</button>
+                <button data-points="10" class="ts-mangan-misi-btn ts-btn w-full justify-start" style="background-color: #eff6ff; color: #1d4ed8;">Jalan 30 Menit (+10 Poin)</button>
+                <button data-points="10" class="ts-mangan-misi-btn ts-btn w-full justify-start" style="background-color: #ecfeff; color: #0e7490;">Minum 8 Gelas Air (+10 Poin)</button>
+              </div>
+            </div>
+        </div>
+        <div id="ts-gensolah-leaderboard" class="ts-section ts-card">
+            <h3 class="text-xl sm:text-2xl font-bold mb-4">Leaderboard Lokal</h3>
+            <ol id="ts-leaderboard-list" class="ts-leaderboard-list space-y-2">
+            </ol>
+        </div>
+
+      </section>
+      
+      <!-- ==================== BERAJAH ==================== -->
+      <section id="berajah" class="section-content">
+          <div class="feature-tabs">
+            <button class="tab-button active" data-target="sekolah-ibu">Sekolah Ibu Hebat</button>
+            <button class="tab-button" data-target="mitos-fakta">Warung Mitos & Fakta</button>
+          </div>
+          
+          <div id="berajah-sekolah-ibu" class="sub-feature-content active">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4">Modul Video Praktis untuk Keluarga</h3>
+              <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div class="card p-0 overflow-hidden" data-module-id="1" data-module-name="Ajaibnya 1000 Hari Pertama Kehidupan">
+                      <img src="https://placehold.co/600x400/FFFBF2/7A1B26?text=Pentingnya+1000+HPK" class="w-full h-40 object-cover">
+                      <div class="p-6">
+                          <h4 class="font-bold text-lg">Modul 1: Ajaibnya 1000 Hari Pertama Kehidupan</h4>
+                          <p class="text-sm text-gray-500 mt-2">Durasi: 3 menit</p>
+                          <button class="ts-berajah-tonton-btn btn w-full mt-4" style="background-color: var(--emas);">Tonton Sekarang</button>
+                          <button class="ts-berajah-sertifikat-btn ts-btn w-full mt-2 ts-hidden" style="background-color: var(--toska); color: white;">Unduh Sertifikat</button>
+                      </div>
+                  </div>
+                   <div class="card p-0 overflow-hidden" data-module-id="2" data-module-name="Kunci Sukses ASI Eksklusif">
+                      <img src="https://placehold.co/600x400/FFFBF2/0BA68B?text=ASI+Eksklusif" class="w-full h-40 object-cover">
+                      <div class="p-6">
+                          <h4 class="font-bold text-lg">Modul 2: Kunci Sukses ASI Eksklusif</h4>
+                          <p class="text-sm text-gray-500 mt-2">Durasi: 5 menit</p>
+                          <button class="ts-berajah-tonton-btn btn w-full mt-4" style="background-color: var(--emas);">Tonton Sekarang</button>
+                          <button class="ts-berajah-sertifikat-btn ts-btn w-full mt-2 ts-hidden" style="background-color: var(--toska); color: white;">Unduh Sertifikat</button>
+                      </div>
+                  </div>
+                   <div class="card p-0 overflow-hidden" data-module-id="3" data-module-name="Resep MPASI Anti GTM">
+                      <img src="https://placehold.co/600x400/FFFBF2/C8479D?text=MPASI+Tepat" class="w-full h-40 object-cover">
+                      <div class="p-6">
+                          <h4 class="font-bold text-lg">Modul 3: Resep MPASI Anti GTM</h4>
+                          <p class="text-sm text-gray-500 mt-2">Durasi: 4 menit</p>
+                          <button class="ts-berajah-tonton-btn btn w-full mt-4" style="background-color: var(--emas);">Tonton Sekarang</button>
+                          <button class="ts-berajah-sertifikat-btn ts-btn w-full mt-2 ts-hidden" style="background-color: var(--toska); color: white;">Unduh Sertifikat</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="card mt-8 text-center">
+                  <h4 class="font-bold text-xl mb-2">Selesaikan Semua Modul & Dapatkan Sertifikat Digital!</h4>
+                  <p class="text-gray-500">Bagikan pencapaian Anda ke media sosial.</p>
+              </div>
+              <div id="ts-berajah-kuis-container" class="ts-section ts-hidden">
+                <div class="ts-card ts-berajah-kuis">
+                    <h3 id="ts-kuis-title" class="text-xl sm:text-2xl font-bold mb-4">Kuis Singkat Modul</h3>
+                    <form id="ts-kuis-form" class="space-y-6">
+                      <div>
+                        <p class="font-bold">1. Berapa lama periode 1000 Hari Pertama Kehidupan (HPK)?</p>
+                        <div class="mt-2 space-y-1">
+                          <label class="flex items-center gap-2"><input type="radio" name="q1" value="a"> Dari lahir sampai usia 2 tahun</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q1" value="b"> Dari dalam kandungan hingga anak usia 2 tahun</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q1" value="c"> Dari usia 1 tahun sampai 3 tahun</label>
+                        </div>
+                      </div>
+                      <div>
+                        <p class="font-bold">2. Apa manfaat utama ASI Eksklusif?</p>
+                        <div class="mt-2 space-y-1">
+                          <label class="flex items-center gap-2"><input type="radio" name="q2" value="a"> Membuat anak cepat gemuk</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q2" value="b"> Membuat anak lebih pintar saja</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q2" value="c"> Memberikan nutrisi lengkap dan kekebalan tubuh</label>
+                        </div>
+                      </div>
+                       <div>
+                        <p class="font-bold">3. Kapan waktu yang tepat memulai MPASI?</p>
+                        <div class="mt-2 space-y-1">
+                          <label class="flex items-center gap-2"><input type="radio" name="q3" value="a"> Saat anak berusia 4 bulan</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q3" value="b"> Tepat saat anak berusia 6 bulan</label>
+                          <label class="flex items-center gap-2"><input type="radio" name="q3" value="c"> Saat anak sudah bisa duduk</label>
+                        </div>
+                      </div>
+                      <button type="submit" class="ts-btn text-white" style="background-color: var(--bordo);">Kirim Jawaban Kuis</button>
+                    </form>
+                    <p id="ts-kuis-hasil" class="mt-4 font-bold text-lg"></p>
+                </div>
+              </div>
+
+          </div>
+          
+          <div id="berajah-mitos-fakta" class="sub-feature-content">
+              <h3 class="text-xl sm:text-2xl font-bold mb-4 text-center">Mitos atau Fakta Gizi?</h3>
+              <div class="grid md:grid-cols-2 gap-8">
+                  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                      <div class="flip-card-inner">
+                          <div class="flip-card-front">
+                              <p class="text-3xl font-bold text-fuchsia">MITOS</p>
+                              <p class="text-xl mt-2 text-center">"Anak gemuk berarti anak sehat."</p>
+                              <p class="text-sm mt-4 text-gray-500">(Klik untuk lihat fakta)</p>
+                          </div>
+                          <div class="flip-card-back">
+                              <p class="text-3xl font-bold text-toska">FAKTA</p>
+                              <p class="text-lg mt-2">Anak sehat memiliki berat badan ideal sesuai usianya, tidak kurang dan tidak lebih. Obesitas pada anak juga merupakan masalah gizi.</p>
+                              <p class="text-xs mt-2 text-gray-400">Sumber: IDAI</p>
+                          </div>
+                      </div>
+                  </div>
+                   <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                      <div class="flip-card-inner">
+                          <div class="flip-card-front">
+                              <p class="text-3xl font-bold text-fuchsia">MITOS</p>
+                              <p class="text-xl mt-2 text-center">"Susu formula lebih baik dari ASI."</p>
+                              <p class="text-sm mt-4 text-gray-500">(Klik untuk lihat fakta)</p>
+                          </div>
+                          <div class="flip-card-back">
+                              <p class="text-3xl font-bold text-toska">FAKTA</p>
+                              <p class="text-lg mt-2">ASI adalah nutrisi terbaik dan tak tergantikan untuk bayi. Komposisinya lengkap dan menyesuaikan kebutuhan bayi seiring pertumbuhannya.</p>
+                              <p class="text-xs mt-2 text-gray-400">Sumber: WHO</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <!-- ==================== SEMETON ==================== -->
+      <section id="semeton" class="section-content">
+        <div class="feature-tabs">
+            <button class="tab-button active" data-target="forum-komunitas">Forum Komunitas</button>
+            <button class="tab-button" data-target="kisah-inspirasi">Dinding Kisah Inspirasi</button>
+        </div>
+        
+        <div id="semeton-forum-komunitas" class="sub-feature-content active">
+            <div class="flex justify-end mb-4"><div id="ts-user-badge-container"></div></div>
+            <div class="max-w-4xl mx-auto">
+                <div class="card mb-8" style="background-color: #fff8f8;">
+                     <h3 class="text-xl font-bold mb-4" style="color: var(--bordo);">Tanya Saja di Forum Semeton!</h3>
+                     <textarea class="w-full p-3 border rounded-lg" rows="4" placeholder="Punya pertanyaan seputar gizi, tumbuh kembang, atau pola asuh? Tanyakan di sini..."></textarea>
+                     <div class="flex justify-between items-center mt-4">
+                         <label class="flex items-center gap-2 text-sm text-gray-600"><input type="checkbox" class="rounded"> Kirim sebagai Anonim</label>
+                         <button class="btn" style="background-color: var(--bordo); color: var(--putih);">Kirim Pertanyaan</button>
+                     </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="card" data-thread-id="1">
+                        <p>Bunda, anak saya GTM setelah tumbuh gigi. Ada tips atau resep yang ampuh ngga ya? Udah coba berbagai menu tapi tetap dilepeh.</p>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t">
+                            <span class="text-sm text-gray-500">- Bunda Laila, Mataram</span>
+                            <div class="flex items-center gap-4">
+                                <button class="flex items-center gap-1 text-sm text-gray-600 hover:text-bordo"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 8 Jawaban</button>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-4 rounded-lg" style="background-color: #f0f9ff;">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-xs font-bold text-blue-800 bg-blue-200 px-2 py-1 rounded-full">Jawaban Terverifikasi</span>
+                            </div>
+                            <p class="text-sm text-gray-700">Halo Bunda Laila, GTM pasca tumbuh gigi wajar terjadi. Coba berikan makanan dengan tekstur lembut dan dingin untuk meredakan nyeri gusi, seperti puree buah dingin atau puding. Tetap sabar dan jangan memaksa ya, Bun.</p>
+                            <p class="text-xs text-right mt-2 text-gray-500">- Bidan Susi, Kader Gizi</p>
+                        </div>
+                        <div class="ts-forum-komentar ts-section">
+                            <h4 class="font-bold mb-3">Komentar Lainnya</h4>
+                            <div id="ts-comment-list-1" class="space-y-3 mb-4"></div>
+                            <div class="flex gap-2">
+                                <textarea id="ts-comment-input-1" class="ts-input flex-grow" placeholder="Tulis komentar Anda..." rows="1"></textarea>
+                                <button class="ts-comment-btn ts-btn" style="background-color: var(--bordo); color: white;">Kirim</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="semeton-kisah-inspirasi" class="sub-feature-content">
+             <div class="text-center mb-8">
+                <h3 class="text-xl sm:text-2xl font-bold">Kisah Sukses Keluarga NTB</h3>
+                <p class="text-gray-500 mt-2">Bagikan cerita inspiratif Anda dalam melawan stunting dan ciptakan keluarga sehat.</p>
+                <button class="btn mt-4" style="background-color: var(--emas); color: var(--teks-utama);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-7-7h14"/></svg>
+                    Bagikan Kisah Anda
+                </button>
+             </div>
+             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                 <div class="card p-0 overflow-hidden" data-story-id="1">
+                     <img src="https://placehold.co/600x400/0BA68B/FFFFFF?text=Anak+Sehat" class="w-full h-48 object-cover">
+                     <div class="p-6">
+                         <h4 class="font-bold text-lg">Dari Garis Merah ke Hijau Berkat Kelor</h4>
+                         <p class="text-sm text-gray-600 mt-2 h-20 overflow-hidden">"Dulu anak saya beratnya susah naik, selalu di garis merah KMS. Setelah ikut penyuluhan di Berajah dan rutin masak sup kelor dari Paonta, alhamdulillah sekarang beratnya ideal..."</p>
+                         <div class="flex justify-between items-center mt-4 pt-4 border-t">
+                            <span class="text-sm text-gray-500">Kisah Ibu Rina</span>
+                            <div class="ts-kisah-reaksi">
+                              <button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                <span class="font-bold">0</span>
+                              </button>
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+      </section>
+      
+      <!-- ==================== PAONTA ==================== -->
+      <section id="paonta" class="section-content">
+        <div class="feature-tabs">
+            <button class="tab-button active" data-target="meal-planner">Smart Meal Planner</button>
+            <button class="tab-button" data-target="resep-sasak">Buku Resep Sasak</button>
+            <button class="tab-button" data-target="marketplace">Marketplace Lokal</button>
+        </div>
+        
+        <div id="paonta-meal-planner" class="sub-feature-content active">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="card" style="background-color: #f0fdfa;">
+                     <h3 class="text-xl font-bold mb-4" style="color: var(--toska);">Perencana Menu Cerdas</h3>
+                     <p class="text-gray-600 mb-6">Masukkan budget dan jumlah anggota keluarga, kami akan susunkan menu sehat 7 hari berbasis resep lokal.</p>
+                     <div class="space-y-4">
+                         <div>
+                             <label for="ts-planner-budget" class="font-bold block mb-2">Budget Mingguan (Rp)</label>
+                             <input type="number" id="ts-planner-budget" class="ts-input" placeholder="Contoh: 150000">
+                         </div>
+                         <div>
+                             <label for="ts-planner-anggota" class="font-bold block mb-2">Jumlah Anggota Keluarga</label>
+                             <input type="number" id="ts-planner-anggota" class="ts-input" placeholder="Contoh: 4">
+                         </div>
+                     </div>
+                     <button id="ts-planner-btn" class="ts-btn w-full mt-6" style="background-color: var(--toska); color: white;">Buat Menu 7 Hari</button>
+                </div>
+                <div class="card">
+                     <h3 class="text-xl font-bold mb-4">Hasil Rencana Menu Anda</h3>
+                     <div id="ts-planner-hasil" class="overflow-x-auto">
+                        <p class="text-gray-500 text-center">Hasil akan ditampilkan di sini setelah Anda mengisi form.</p>
+                     </div>
+                     <button id="ts-planner-cetak-btn" class="ts-btn w-full mt-4 ts-hidden" style="background-color: var(--bordo); color: white;">Cetak Menu</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="paonta-resep-sasak" class="sub-feature-content">
+            <h3 class="text-xl sm:text-2xl font-bold mb-6">Buku Resep Digital Khas Sasak</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card p-0 overflow-hidden" data-recipe-id="1">
+                    <img src="https://placehold.co/600x400/7A1B26/FFFFFF?text=Beberuk+Terong" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg">Beberuk Terong Ikan Tongkol</h4>
+                        <div class="flex justify-between text-sm text-gray-500 mt-2">
+                            <span>Gizi: <strong>250 Kalori, 15g Protein</strong></span>
+                            <span>Biaya: <strong>~Rp 8.000/porsi</strong></span>
+                        </div>
+                        <button class="ts-lihat-resep-btn btn w-full mt-4 text-sm" style="background-color: var(--toska); color: white;">Lihat Resep</button>
+                    </div>
+                </div>
+                 <div class="card p-0 overflow-hidden" data-recipe-id="2">
+                    <img src="https://placehold.co/600x400/E1B400/FFFFFF?text=Ares+Bebek" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg">Sayur Ares Khas Lombok</h4>
+                        <div class="flex justify-between text-sm text-gray-500 mt-2">
+                            <span>Gizi: <strong>180 Kalori, 12g Protein</strong></span>
+                            <span>Biaya: <strong>~Rp 12.000/porsi</strong></span>
+                        </div>
+                        <button class="ts-lihat-resep-btn btn w-full mt-4 text-sm" style="background-color: var(--toska); color: white;">Lihat Resep</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="paonta-marketplace" class="sub-feature-content">
+             <h3 class="text-xl sm:text-2xl font-bold mb-6">Belanja Bahan Pangan dari UMKM Lokal</h3>
+             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                 <div class="card text-center">
+                     <img src="https://placehold.co/300x300/f0fdfa/0BA68B?text=Daun+Kelor" class="w-full h-40 object-cover rounded-lg mb-4">
+                     <h4 class="font-bold">Daun Kelor Segar</h4>
+                     <p class="text-gray-500 text-sm">per ikat</p>
+                     <p class="font-bold text-lg my-2" style="color: var(--toska);">Rp 3.000</p>
+                     <button class="btn w-full text-sm" style="background-color: var(--toska); color: white;">Beli Sekarang</button>
+                 </div>
+             </div>
+        </div>
+      </section>
+      
+      <!-- ==================== ASRI AI ==================== -->
+      <section id="asriai" class="section-content">
+          <div class="chat-container">
+              <div class="chat-header">
+                  <img src="https://placehold.co/50x50/FFFFFF/38BDF8?text=Asri" class="rounded-full">
+                  <div>
+                      <h3 class="font-bold text-lg">Asri AI</h3>
+                      <p class="text-sm opacity-80">Asisten Cerdas Gizi Keluarga Anda</p>
+                  </div>
+              </div>
+              <div id="chat-messages" class="chat-messages">
+                  <div class="message ai">
+                      Halo, saya Asri. Ada yang bisa saya bantu seputar gizi, MPASI, atau pola makan anak? Silakan bertanya.
+                  </div>
+              </div>
+              <div class="chat-input-area">
+                  <input type="text" id="user-input" placeholder="Ketik pertanyaan Anda di sini..." autocomplete="off">
+                  <button id="send-btn" class="btn text-white" style="background-color: var(--biru-langit);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  </button>
+                  <button id="upload-food-btn" class="btn text-gray-600 bg-gray-200" title="Analisis Foto Makanan">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                  </button>
+              </div>
+          </div>
+      </section>
+      
+      <!-- ==================== PENGATURAN (SETTINGS) - BARU ==================== -->
+      <section id="ts-settings" class="section-content">
+        <div class="ts-card">
+            <div class="ts-settings-container">
+                <nav id="ts-settings-nav" class="ts-settings-nav">
+                    <button class="active" data-target="ts-settings-profile" data-lang-key="set_profil">Profil Pengguna</button>
+                    <button data-target="ts-settings-lang" data-lang-key="set_bahasa">Bahasa</button>
+                    <button data-target="ts-settings-privacy" data-lang-key="set_privasi">Privasi & Keamanan</button>
+                    <button data-target="ts-settings-notif" data-lang-key="set_notif">Notifikasi</button>
+                    <button data-target="ts-settings-access" data-lang-key="set_akses">Aksesibilitas</button>
+                    <button data-target="ts-settings-theme" data-lang-key="set_tema">Tema</button>
+                    <button data-target="ts-settings-backup" data-lang-key="set_cadangan">Cadangan Data</button>
+                </nav>
+                <div class="ts-settings-panes">
+                    <!-- 1. Profil Pengguna -->
+                    <div id="ts-settings-profile" class="ts-settings-content active">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_profil_title">Profil Pengguna</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="ts-form-group">
+                                <label for="profile-name" data-lang-key="set_profil_nama">Nama</label>
+                                <input type="text" id="profile-name" class="ts-input" placeholder="Bunda Hebat">
+                            </div>
+                            <div class="ts-form-group">
+                                <label for="profile-email" data-lang-key="set_profil_email">Email</label>
+                                <input type="email" id="profile-email" class="ts-input" placeholder="nama@email.com">
+                            </div>
+                             <div class="ts-form-group">
+                                <label for="profile-whatsapp" data-lang-key="set_profil_wa">Nomor WhatsApp</label>
+                                <input type="tel" id="profile-whatsapp" class="ts-input" placeholder="081234567890">
+                            </div>
+                            <div class="ts-form-group">
+                                <label for="profile-role" data-lang-key="set_profil_peran">Peran</label>
+                                <select id="profile-role" class="ts-select">
+                                    <option value="ortu" data-lang-key="peran_ortu">Orang Tua</option>
+                                    <option value="kader" data-lang-key="peran_kader">Kader</option>
+                                    <option value="nakes" data-lang-key="peran_nakes">Tenaga Kesehatan</option>
+                                    <option value="remaja" data-lang-key="peran_remaja">Remaja</option>
+                                </select>
+                            </div>
+                             <div class="ts-form-group">
+                                <label for="profile-kecamatan" data-lang-key="set_profil_kec">Kecamatan</label>
+                                <input type="text" id="profile-kecamatan" class="ts-input" placeholder="Contoh: Selong">
+                            </div>
+                            <div class="ts-form-group">
+                                <label for="profile-desa" data-lang-key="set_profil_desa">Desa</label>
+                                <input type="text" id="profile-desa" class="ts-input" placeholder="Contoh: Pancor">
+                            </div>
+                             <div class="ts-form-group md:col-span-2">
+                                <label for="profile-pin" data-lang-key="set_profil_pin">PIN Aplikasi (4 digit, untuk keamanan)</label>
+                                <input type="password" id="profile-pin" class="ts-input" placeholder="••••" maxlength="4" pattern="\d{4}" inputmode="numeric">
+                            </div>
+                        </div>
+                        <button id="ts-save-profile-btn" class="ts-btn text-white" style="background-color: var(--bordo);" data-lang-key="simpan_profil">Simpan Profil</button>
+                    </div>
+
+                    <!-- 2. Bahasa -->
+                    <div id="ts-settings-lang" class="ts-settings-content">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_bahasa_title">Bahasa Aplikasi</h3>
+                        <div class="ts-form-group grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3">
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="id"> Indonesia</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="en"> English</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="sas"> Sasak</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="ar"> العربية (Arabic)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="es"> Español (Spanish)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="fr"> Français (French)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="hi"> हिन्दी (Hindi)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="pt"> Português</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="ru"> Русский (Russian)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="zh"> 中文 (Mandarin)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="ja"> 日本語 (Japanese)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="de"> Deutsch (German)</label>
+                           <label class="flex items-center gap-3"><input type="radio" name="lang" value="bn"> বাংলা (Bengali)</label>
+                        </div>
+                    </div>
+
+                    <!-- 3. Privasi PIN -->
+                    <div id="ts-settings-privacy" class="ts-settings-content">
+                         <h3 class="text-xl font-bold mb-4" data-lang-key="set_privasi_title">Privasi & Keamanan</h3>
+                         <div class="ts-form-group">
+                            <label for="privacy-lock" class="ts-toggle-switch">
+                                <span data-lang-key="set_privasi_kunci">Kunci Aplikasi dengan PIN</span>
+                                <input type="checkbox" id="privacy-lock">
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                            <p class="text-sm text-gray-500 mt-2" data-lang-key="set_privasi_info">Jika aktif, Anda akan diminta memasukkan PIN setiap kali membuka aplikasi. Pastikan Anda sudah mengatur PIN di Profil Pengguna.</p>
+                         </div>
+                    </div>
+
+                    <!-- 4. Notifikasi -->
+                    <div id="ts-settings-notif" class="ts-settings-content">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_notif_title">Preferensi Notifikasi</h3>
+                        <div class="space-y-4">
+                            <label for="notif-ukur" class="ts-toggle-switch">
+                                <span data-lang-key="set_notif_1">Pengingat ukur & timbang bulanan</span>
+                                <input type="checkbox" id="notif-ukur" checked>
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                             <label for="notif-imunisasi" class="ts-toggle-switch">
+                                <span data-lang-key="set_notif_2">Pengingat jadwal imunisasi</span>
+                                <input type="checkbox" id="notif-imunisasi" checked>
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                             <label for="notif-ttd" class="ts-toggle-switch">
+                                <span data-lang-key="set_notif_3">Pengingat TTD remaja putri</span>
+                                <input type="checkbox" id="notif-ttd">
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                        </div>
+                         <p class="text-sm text-gray-500 mt-6" data-lang-key="set_notif_info">Aplikasi ini tidak mengirim notifikasi push. Fitur ini hanya menyimpan preferensi Anda untuk integrasi di masa mendatang.</p>
+                    </div>
+
+                    <!-- 5. Aksesibilitas -->
+                    <div id="ts-settings-access" class="ts-settings-content">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_akses_title">Aksesibilitas</h3>
+                         <div class="space-y-4">
+                            <label for="access-font" class="ts-toggle-switch">
+                                <span data-lang-key="set_akses_font">Ukuran font besar</span>
+                                <input type="checkbox" id="access-font">
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                             <label for="access-motion" class="ts-toggle-switch">
+                                <span data-lang-key="set_akses_animasi">Kurangi animasi</span>
+                                <input type="checkbox" id="access-motion">
+                                <span class="ts-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 6. Tema -->
+                    <div id="ts-settings-theme" class="ts-settings-content">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_tema_title">Tema Tampilan</h3>
+                         <div class="ts-form-group">
+                           <div class="space-y-2">
+                               <label class="flex items-center gap-3"><input type="radio" name="theme" value="system"> <span data-lang-key="set_tema_sistem">Ikuti sistem</span></label>
+                               <label class="flex items-center gap-3"><input type="radio" name="theme" value="light"> <span data-lang-key="set_tema_terang">Terang</span></label>
+                               <label class="flex items-center gap-3"><input type="radio" name="theme" value="dark"> <span data-lang-key="set_tema_gelap">Gelap</span></label>
+                           </div>
+                        </div>
+                    </div>
+
+                    <!-- 7. Cadangan Data -->
+                    <div id="ts-settings-backup" class="ts-settings-content">
+                        <h3 class="text-xl font-bold mb-4" data-lang-key="set_cadangan_title">Cadangan Data Lokal</h3>
+                        <p class="text-gray-500 mb-4" data-lang-key="set_cadangan_info">Ekspor data Anda sebagai file cadangan, atau impor data dari file yang sudah ada. Semua data tersimpan di perangkat Anda, bukan di server kami.</p>
+                        <div class="flex flex-wrap gap-4">
+                            <button id="ts-export-btn" class="ts-btn text-white" style="background-color: var(--toska);" data-lang-key="set_cadangan_ekspor">Ekspor Data (JSON)</button>
+                            <button id="ts-import-btn" class="ts-btn" style="background-color: var(--emas); color: var(--teks-utama);" data-lang-key="set_cadangan_impor">Impor Data (JSON)</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer>
+          <div class="grid md:grid-cols-3 gap-8">
+              <div>
+                  <h4 class="font-bold text-lg text-white">tunassolah.id</h4>
+                  <p class="mt-2 text-sm" data-lang-key="footer_desc">Platform digital dari NTB untuk masa depan generasi yang lebih sehat, cerdas, dan bebas stunting.</p>
+              </div>
+              <div>
+                  <h4 class="font-bold text-lg text-white" data-lang-key="footer_tautan">Tautan Cepat</h4>
+                  <ul class="mt-2 space-y-1 text-sm">
+                      <li><a href="#" class="hover:text-white" data-lang-key="footer_tentang">Tentang Kami</a></li>
+                      <li><a href="#" class="hover:text-white" data-lang-key="footer_bantuan">Pusat Bantuan</a></li>
+                      <li><a href="#" class="hover:text-white" data-lang-key="footer_privasi">Kebijakan Privasi</a></li>
+                  </ul>
+              </div>
+              <div>
+                  <h4 class="font-bold text-lg text-white" data-lang-key="footer_bahasa">Bahasa</h4>
+                  <div class="mt-2 space-x-2 text-sm">
+                      <a href="#" class="font-bold text-white underline">Indonesia</a>
+                      <a href="#" class="hover:text-white">Sasak</a>
+                  </div>
+              </div>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/20 text-center text-xs" data-lang-key="footer_copy">
+              © 2025 tunassolah.id – Dibangun oleh Generasi NTB untuk Masa Depan Tanpa Stunting.
+          </div>
+      </footer>
+    </main>
+  </div>
+  <div id="ts-login-modal" class="ts-modal">
+    <div class="ts-modal-content max-w-sm">
+        <h3 class="text-2xl font-bold mb-1">Login Semeton</h3>
+        <p class="text-gray-500 mb-6">Masukkan nama dan email untuk berinteraksi.</p>
+        <form id="ts-login-form" class="space-y-4">
+            <div>
+                <label for="ts-login-name" class="font-bold block mb-2">Nama Anda</label>
+                <input type="text" id="ts-login-name" class="ts-input" placeholder="Bunda Hebat" required>
+            </div>
+            <div>
+                <label for="ts-login-email" class="font-bold block mb-2">Email</label>
+                <input type="email" id="ts-login-email" class="ts-input" placeholder="nama@email.com" required>
+            </div>
+            <button type="submit" class="ts-btn w-full text-white" style="background-color: var(--bordo);">Login & Mulai Berbagi</button>
+        </form>
+    </div>
+  </div>
+  <div id="ts-resep-detail-modal" class="ts-modal">
+    <div class="ts-modal-content">
+        <button id="ts-resep-close-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">&times;</button>
+        <div id="ts-resep-detail-content"></div>
+    </div>
+  </div>
+  <div id="ts-panduan-keracunan-modal" class="ts-modal">
+      <div class="ts-modal-content text-center">
+          <h3 class="text-2xl font-bold mb-4">Panduan Cepat Keracunan Makanan</h3>
+          <div class="grid grid-cols-2 gap-4 text-left">
+              <div class="p-4 bg-blue-50 rounded-lg"><strong>1. Jangan Panik:</strong> Tetap tenang agar bisa berpikir jernih.</div>
+              <div class="p-4 bg-yellow-50 rounded-lg"><strong>2. Pisahkan Makanan:</strong> Jauhkan sisa makanan yang dicurigai agar tidak dimakan orang lain.</div>
+              <div class="p-4 bg-green-50 rounded-lg"><strong>3. Beri Air Putih:</strong> Bantu korban minum air putih untuk mencegah dehidrasi. Jangan berikan susu.</div>
+              <div class="p-4 bg-red-50 rounded-lg"><strong>4. Hubungi PSC 119:</strong> Segera hubungi bantuan medis jika gejala parah.</div>
+          </div>
+          <button id="ts-keracunan-close-btn" class="ts-btn mt-6" style="background-color: #e5e7eb;">Tutup</button>
+      </div>
+  </div>
+  <canvas id="ts-sertifikat-canvas" class="ts-sertifikat-canvas" width="800" height="565"></canvas>
+  <button id="ts-asri-toggle" title="Tanya Asri AI">
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="12" width="8" height="8" rx="2"/><path d="M8 12v-2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2"/><path d="m14 15-2 2-2-2"/></svg>
+  </button>
+  <div id="ts-asri-panel" class="chat-container">
+    <div class="chat-header">
+        <img src="https://placehold.co/50x50/FFFFFF/38BDF8?text=Asri" class="rounded-full">
+        <div>
+            <h3 class="font-bold text-lg">Asri AI</h3>
+            <p class="text-sm opacity-80">Asisten Cerdas Gizi</p>
+        </div>
+    </div>
+    <div id="ts-chat-messages" class="chat-messages">
+    </div>
+    <div class="ts-chat-recommendations">
+        <div class="ts-chat-reco-card" data-prompt="Info Gizi">Info Gizi</div>
+        <div class="ts-chat-reco-card" data-prompt="Resep MPASI">Resep MPASI</div>
+        <div class="ts-chat-reco-card" data-prompt="Apa itu stunting?">Apa itu stunting?</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="ts-user-input" placeholder="Ketik pertanyaan..." autocomplete="off">
+        <button id="ts-send-btn" class="btn text-white" style="background-color: var(--biru-langit);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+    </div>
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Namespace utama aplikasi
+      window.ts = {};
+
+      const pageTitles = {
+          beranda: { title: "beranda_title", subtitle: "beranda_subtitle" },
+          gizinusa: { title: "gizinusa_title", subtitle: "gizinusa_subtitle" },
+          gensolah: { title: "gensolah_title", subtitle: "gensolah_subtitle" },
+          berajah: { title: "berajah_title", subtitle: "berajah_subtitle" },
+          semeton: { title: "semeton_title", subtitle: "semeton_subtitle" },
+          paonta: { title: "paonta_title", subtitle: "paonta_subtitle" },
+          asriai: { title: "asriai_title", subtitle: "asriai_subtitle" },
+          'ts-settings': { title: "pengaturan_title", subtitle: "pengaturan_subtitle"}
+      };
+      const navButtons = document.querySelectorAll('.nav-button');
+      const sections = document.querySelectorAll('.section-content');
+      const pageTitleElement = document.getElementById('page-title').querySelector('h2');
+      const pageSubtitleElement = document.getElementById('page-title').querySelector('p');
+
+      window.navigateTo = function(targetId) {
+          navButtons.forEach(btn => {
+              btn.classList.toggle('active', btn.dataset.target === targetId);
+          });
+          sections.forEach(section => section.classList.toggle('active', section.id === targetId));
+          
+          if (pageTitles[targetId]) {
+              pageTitleElement.dataset.langKey = pageTitles[targetId].title;
+              pageSubtitleElement.dataset.langKey = pageTitles[targetId].subtitle;
+              if (window.ts.settingsManager) {
+                  window.ts.settingsManager.updateAllText();
+              }
+          }
+          
+          window.scrollTo(0, 0);
+          if (targetId === 'gizinusa' && window.initGrowthChart) { initGrowthChart(); }
+      }
+
+      navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.dataset.target) {
+              navigateTo(button.dataset.target);
+          }
+        });
+      });
+      
+      const allTabContainers = document.querySelectorAll('.feature-tabs');
+      allTabContainers.forEach(container => {
+          const tabButtons = container.querySelectorAll('.tab-button');
+          const parentSection = container.closest('.section-content');
+          tabButtons.forEach(button => {
+              button.addEventListener('click', () => {
+                  const targetId = button.dataset.target;
+                  tabButtons.forEach(btn => btn.classList.remove('active'));
+                  button.classList.add('active');
+                  parentSection.querySelectorAll('.sub-feature-content').forEach(content => {
+                      const contentId = `${parentSection.id}-${targetId}`;
+                      content.classList.toggle('active', content.id === contentId);
+                  });
+              });
+          });
+      });
+      
+      let growthChartInstance = null;
+      function initGrowthChart(newData) {
+          const ctx = document.getElementById('growthChart').getContext('2d');
+          if (growthChartInstance) { growthChartInstance.destroy(); }
+          
+          let labels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+          let data = [8.5, 8.8, 9.1, 9.3, 9.6, 9.9];
+          
+          if (newData && newData.length > 0) {
+              labels = newData.map(item => new Date(item.tanggal).toLocaleDateString('id-ID', { month: 'short' }));
+              data = newData.map(item => item.berat);
+          }
+
+          growthChartInstance = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: labels,
+                  datasets: [{
+                      label: 'Berat Badan Anak (kg)', data: data,
+                      borderColor: 'var(--bordo)', backgroundColor: 'rgba(122, 27, 38, 0.1)',
+                      fill: true, tension: 0.4
+                  }]
+              },
+              options: { responsive: true, scales: { y: { beginAtZero: false } } }
+          });
+      }
+      window.initGrowthChart = initGrowthChart;
+
+      const mapPaths = document.querySelectorAll('#ntb-map path');
+      const mapTooltip = document.getElementById('map-tooltip');
+      mapPaths.forEach(path => {
+          path.addEventListener('mouseover', () => {
+              mapTooltip.textContent = `${path.dataset.name}: ${path.dataset.prevalence}`;
+              mapTooltip.classList.remove('hidden');
+          });
+          path.addEventListener('mouseout', () => { mapTooltip.classList.add('hidden'); });
+      });
+
+      const sosBtn = document.getElementById('sos-btn');
+      const sosModal = document.getElementById('sos-modal');
+      const closeSosModalBtn = document.getElementById('close-sos-modal');
+
+      sosBtn.addEventListener('click', () => { sosModal.classList.add('active'); });
+      closeSosModalBtn.addEventListener('click', () => { sosModal.classList.remove('active'); });
+      sosModal.addEventListener('click', (e) => { if (e.target === sosModal) { sosModal.classList.remove('active'); } });
+
+      const authModal = document.getElementById('auth-modal');
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const btnMasuk = document.querySelector('.btn-masuk');
+      const btnDaftar = document.querySelector('.btn-daftar');
+      const closeAuthModalBtn = document.getElementById('close-auth-modal');
+      const showRegisterLink = document.getElementById('show-register');
+      const showLoginLink = document.getElementById('show-login');
+
+      const openModal = (isLogin = true) => {
+          authModal.classList.add('active');
+          loginForm.classList.toggle('hidden', !isLogin);
+          registerForm.classList.toggle('hidden', isLogin);
+      };
+      
+      const closeModal = () => { authModal.classList.remove('active'); };
+      
+      btnMasuk.addEventListener('click', () => openModal(true));
+      btnDaftar.addEventListener('click', () => openModal(false));
+      closeAuthModalBtn.addEventListener('click', closeModal);
+      showRegisterLink.addEventListener('click', (e) => { e.preventDefault(); openModal(false); });
+      showLoginLink.addEventListener('click', (e) => { e.preventDefault(); openModal(true); });
+      authModal.addEventListener('click', (e) => { if (e.target === authModal) closeModal(); });
+
+      const chatMessages = document.getElementById('chat-messages');
+      const userInput = document.getElementById('user-input');
+      const sendBtn = document.getElementById('send-btn');
+      
+      const addMessage = (text, sender) => {
+          const messageDiv = document.createElement('div');
+          messageDiv.className = `message ${sender}`;
+          messageDiv.textContent = text;
+          chatMessages.appendChild(messageDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+      };
+      
+      const handleUserMessage = () => {
+          const text = userInput.value.trim();
+          if (text) {
+              addMessage(text, 'user');
+              userInput.value = '';
+              setTimeout(() => { addMessage(getAiResponse(text), 'ai'); }, 1000);
+          }
+      };
+      
+      const getAiResponse = (userText) => {
+          userText = userText.toLowerCase();
+          if (userText.includes("mpasi") || userText.includes("makanan bayi")) { return "MPASI sebaiknya dimulai saat bayi berusia 6 bulan. Pastikan teksturnya sesuai usia dan perkenalkan satu jenis makanan baru setiap 3-4 hari untuk memantau alergi. Mau resep MPASI dari bahan lokal seperti ikan tongkol atau daun kelor?"; }
+          else if (userText.includes("stunting")) { return "Stunting adalah kondisi gagal tumbuh pada anak akibat kekurangan gizi kronis. Pencegahannya sangat penting, terutama pada 1000 Hari Pertama Kehidupan. Pemantauan rutin di GiziNusa dapat membantu deteksi dini."; }
+          else if (userText.includes("resep")) { return "Tentu! Anda bisa cek fitur Paonta untuk Buku Resep Sasak. Di sana ada banyak resep lokal bergizi seperti Pelecing Kangkung, Sayur Ares, dan aneka olahan ikan yang kaya protein."; }
+          return "Maaf, saya masih belajar. Coba tanyakan tentang MPASI, stunting, atau resep makanan lokal NTB.";
+      };
+      
+      sendBtn.addEventListener('click', handleUserMessage);
+      userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { handleUserMessage(); } });
+      
+    });
+  </script>
+
+  <script id="ts-scripts">
+    document.addEventListener('DOMContentLoaded', function() {
+        const ls = {
+            get: (key, defaultValue = null) => JSON.parse(localStorage.getItem(key)) || defaultValue,
+            set: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
+        };
+        const gizi = {
+            kaloriUsia: document.getElementById('ts-kalori-usia'),
+            kaloriBerat: document.getElementById('ts-kalori-berat'),
+            kaloriGender: document.getElementById('ts-kalori-gender'),
+            kaloriAktivitas: document.getElementById('ts-kalori-aktivitas'),
+            kaloriHitungBtn: document.getElementById('ts-kalori-hitung-btn'),
+            kaloriHasilContainer: document.getElementById('ts-kalori-hasil'),
+            kaloriHasilTotal: document.getElementById('ts-kalori-hasil-total'),
+            kaloriHasilMakro: document.getElementById('ts-kalori-hasil-makro'),
+            riwayatTbody: document.getElementById('ts-riwayat-tbody'),
+            hitungGiziBtn: document.getElementById('ts-hitung-gizi-btn'),
+            giziStatusCard: document.getElementById('ts-gizi-status-card'),
+
+            init() {
+                this.kaloriHitungBtn.addEventListener('click', () => this.hitungKalori());
+                this.hitungGiziBtn.addEventListener('click', () => this.simpanRiwayat()); 
+                this.loadLastKalori();
+                this.renderRiwayat();
+            },
+            
+            hitungKalori() {
+                const usia = parseFloat(this.kaloriUsia.value);
+                const berat = parseFloat(this.kaloriBerat.value);
+                const gender = this.kaloriGender.value;
+                const aktivitas = parseFloat(this.kaloriAktivitas.value);
+                if (!usia || !berat) { alert("Harap isi usia dan berat badan anak."); return; }
+                const bmr = (10 * berat) + (6.25 * (usia * 7 + 77)) - (5 * usia) + (gender === 'l' ? 5 : -161);
+                const kaloriTotal = Math.round(bmr * aktivitas);
+                const protein = Math.round((kaloriTotal * 0.15) / 4);
+                const karbo = Math.round((kaloriTotal * 0.55) / 4);
+                const lemak = Math.round((kaloriTotal * 0.30) / 9);
+                const result = { kalori: kaloriTotal, protein, karbo, lemak };
+                this.displayKalori(result);
+                ls.set('ts:gizinusa:lastCalc', result);
+            },
+            
+            displayKalori(result) {
+                this.kaloriHasilTotal.textContent = `${result.kalori.toLocaleString('id-ID')} kkal`;
+                this.kaloriHasilMakro.innerHTML = `
+                    <div><p class="font-bold text-lg">${result.protein}g</p><p class="text-sm text-gray-500">Protein</p></div>
+                    <div><p class="font-bold text-lg">${result.karbo}g</p><p class="text-sm text-gray-500">Karbohidrat</p></div>
+                    <div><p class="font-bold text-lg">${result.lemak}g</p><p class="text-sm text-gray-500">Lemak</p></div>`;
+                this.kaloriHasilContainer.classList.remove('ts-hidden');
+            },
+            
+            loadLastKalori() {
+                const lastCalc = ls.get('ts:gizinusa:lastCalc');
+                if (lastCalc) { this.displayKalori(lastCalc); }
+            },
+
+            simpanRiwayat() {
+                const tinggi = document.getElementById('anak-tinggi').value;
+                const berat = document.getElementById('anak-berat').value;
+                if (!tinggi || !berat) return;
+                const riwayat = ls.get('ts:gizinusa:history', []);
+                const status = (berat > 8 && berat < 12) ? 'Gizi Baik' : (berat <= 8 ? 'Kurang Gizi' : 'Gizi Lebih');
+                riwayat.push({ tanggal: new Date().toISOString(), tinggi, berat, status });
+                ls.set('ts:gizinusa:history', riwayat);
+                this.renderRiwayat();
+                this.updateStatusCard(status);
+            },
+            
+            renderRiwayat() {
+                const riwayat = ls.get('ts:gizinusa:history', []);
+                this.riwayatTbody.innerHTML = '';
+                let prevBerat = 0;
+                riwayat.forEach(item => {
+                    const warna = item.berat >= prevBerat ? 'ts-text-green' : 'ts-text-red';
+                    prevBerat = item.berat;
+                    const row = `
+                        <tr>
+                            <td>${new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
+                            <td>${item.tinggi}</td>
+                            <td class="${warna}">${item.berat}</td>
+                            <td>${item.status}</td>
+                        </tr>`;
+                    this.riwayatTbody.insertAdjacentHTML('beforeend', row);
+                });
+                if (riwayat.length > 0) {
+                    window.initGrowthChart(riwayat);
+                }
+            },
+            
+            updateStatusCard(status) {
+                let bgColor = 'bg-gray-100';
+                let textColor = 'text-gray-800';
+                if (status === 'Gizi Baik') { bgColor = 'bg-green-100'; textColor = 'text-green-800'; }
+                if (status === 'Kurang Gizi') { bgColor = 'bg-red-100'; textColor = 'text-red-800'; }
+                this.giziStatusCard.className = `p-4 text-center ${bgColor} ${textColor} rounded-lg`;
+                this.giziStatusCard.innerHTML = `<p class="font-bold text-lg">${status}</p><p class="text-sm">(Berdasarkan data terakhir)</p>`;
+            }
+        };
+        gizi.init();
+        const genSolah = {
+            imtTinggi: document.getElementById('ts-imt-tinggi'),
+            imtBerat: document.getElementById('ts-imt-berat'),
+            imtHitungBtn: document.getElementById('ts-imt-hitung-btn'),
+            imtHasil: document.getElementById('ts-imt-hasil'),
+            misiBtns: document.querySelectorAll('.ts-mangan-misi-btn'),
+            pointsDisplay: document.getElementById('ts-mangan-points'),
+            levelDisplay: document.getElementById('ts-mangan-level'),
+            progressBar: document.getElementById('ts-mangan-progress-bar'),
+            leaderboardList: document.getElementById('ts-leaderboard-list'),
+            
+            init() {
+                this.imtHitungBtn.addEventListener('click', () => this.hitungIMT());
+                this.loadLastIMT();
+                this.misiBtns.forEach(btn => btn.addEventListener('click', (e) => this.selesaikanMisi(e)));
+                this.updateManganQuestUI();
+                this.renderLeaderboard();
+            },
+
+            hitungIMT() {
+                const tinggi = parseFloat(this.imtTinggi.value) / 100;
+                const berat = parseFloat(this.imtBerat.value);
+                if (!tinggi || !berat) { alert("Isi tinggi dan berat badan."); return; }
+                const imt = berat / (tinggi * tinggi);
+                let status = '';
+                if (imt < 18.5) status = 'Kurus';
+                else if (imt < 24.9) status = 'Normal';
+                else status = 'Gemuk';
+                const result = { imt: imt.toFixed(1), status };
+                this.displayIMT(result);
+                ls.set('ts:gensolah:lastBmi', result);
+            },
+
+            displayIMT(result) {
+                this.imtHasil.innerHTML = `<p class="font-bold">IMT Anda: ${result.imt}</p><p>Status: ${result.status}</p>`;
+                this.imtHasil.classList.remove('ts-hidden');
+            },
+            
+            loadLastIMT() {
+                const lastBmi = ls.get('ts:gensolah:lastBmi');
+                if (lastBmi) this.displayIMT(lastBmi);
+            },
+
+            selesaikanMisi(e) {
+                const pointsToAdd = parseInt(e.target.dataset.points, 10);
+                let currentPoints = ls.get('ts:gensolah:points', 0);
+                currentPoints += pointsToAdd;
+                ls.set('ts:gensolah:points', currentPoints);
+                this.updateManganQuestUI();
+            },
+
+            updateManganQuestUI() {
+                const points = ls.get('ts:gensolah:points', 0);
+                const level = Math.floor(points / 50) + 1;
+                ls.set('ts:gensolah:level', level);
+                this.pointsDisplay.textContent = points;
+                this.levelDisplay.textContent = level;
+                const progress = (points % 50) / 50 * 100;
+                this.progressBar.style.width = `${progress}%`;
+            },
+            
+            renderLeaderboard() {
+                const user = ls.get('ts:user');
+                const myPoints = ls.get('ts:gensolah:points', 0);
+                let dummyData = [
+                    { name: 'Putri', points: 250 },
+                    { name: 'Bagus', points: 180 },
+                    { name: 'Adit', points: 150 },
+                    { name: 'Cinta', points: 90 },
+                    { name: 'Eka', points: 50 }
+                ];
+                if (user && myPoints > 0) {
+                    dummyData.push({ name: `${user.name} (Anda)`, points: myPoints });
+                }
+                dummyData.sort((a, b) => b.points - a.points);
+                this.leaderboardList.innerHTML = dummyData.slice(0, 5).map(u => `<li>${u.name} - ${u.points} Poin</li>`).join('');
+            }
+        };
+        genSolah.init();
+        const berajah = {
+            tontonBtns: document.querySelectorAll('.ts-berajah-tonton-btn'),
+            kuisContainer: document.getElementById('ts-berajah-kuis-container'),
+            kuisTitle: document.getElementById('ts-kuis-title'),
+            kuisForm: document.getElementById('ts-kuis-form'),
+            kuisHasil: document.getElementById('ts-kuis-hasil'),
+            sertifikatCanvas: document.getElementById('ts-sertifikat-canvas'),
+            currentModule: null,
+            answers: { q1: 'b', q2: 'c', q3: 'b' },
+
+            init() {
+                this.tontonBtns.forEach(btn => {
+                    const moduleCard = btn.closest('.card');
+                    const moduleId = moduleCard.dataset.moduleId;
+                    btn.addEventListener('click', () => this.startKuis(moduleCard));
+                    if (ls.get(`ts:berajah:passed:${moduleId}`)) {
+                        this.showSertifikatButton(moduleCard);
+                    }
+                    const sertifikatBtn = moduleCard.querySelector('.ts-berajah-sertifikat-btn');
+                    sertifikatBtn.addEventListener('click', () => this.downloadSertifikat(moduleCard.dataset.moduleName));
+                });
+                this.kuisForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitKuis();
+                });
+            },
+            
+            startKuis(moduleCard) {
+                this.currentModule = moduleCard;
+                this.kuisTitle.textContent = `Kuis Singkat: ${moduleCard.dataset.moduleName}`;
+                this.kuisContainer.classList.remove('ts-hidden');
+                this.kuisHasil.textContent = '';
+                this.kuisForm.reset();
+                this.kuisContainer.scrollIntoView({ behavior: 'smooth' });
+            },
+
+            submitKuis() {
+                const formData = new FormData(this.kuisForm);
+                let score = 0;
+                for (const [key, value] of formData.entries()) {
+                    if (this.answers[key] === value) {
+                        score++;
+                    }
+                }
+                
+                if (score >= 2) {
+                    this.kuisHasil.textContent = 'Selamat, Anda Lulus Modul Ini!';
+                    this.kuisHasil.className = 'mt-4 font-bold text-lg ts-text-green';
+                    ls.set(`ts:berajah:passed:${this.currentModule.dataset.moduleId}`, true);
+                    this.showSertifikatButton(this.currentModule);
+                } else {
+                    this.kuisHasil.textContent = `Anda benar ${score} dari 3. Coba lagi!`;
+                    this.kuisHasil.className = 'mt-4 font-bold text-lg ts-text-red';
+                }
+            },
+
+            showSertifikatButton(moduleCard) {
+                const btn = moduleCard.querySelector('.ts-berajah-sertifikat-btn');
+                btn.classList.remove('ts-hidden');
+            },
+
+            downloadSertifikat(moduleName) {
+                const user = ls.get('ts:user');
+                if (!user) {
+                    alert("Silakan login di fitur Semeton untuk mendapatkan nama di sertifikat.");
+                    return;
+                }
+                const ctx = this.sertifikatCanvas.getContext('2d');
+                const canvas = this.sertifikatCanvas;
+                ctx.fillStyle = '#FFFBF2';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = '#7A1B26';
+                ctx.lineWidth = 10;
+                ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+                ctx.fillStyle = '#1E293B';
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 48px "Plus Jakarta Sans"';
+                ctx.fillText('Sertifikat Kelulusan', canvas.width / 2, 120);
+                ctx.font = '24px "Plus Jakarta Sans"';
+                ctx.fillText('Diberikan kepada', canvas.width / 2, 200);
+                ctx.font = 'bold 60px "Plus Jakarta Sans"';
+                ctx.fillStyle = '#E1B400';
+                ctx.fillText(user.name, canvas.width / 2, 280);
+                ctx.font = '24px "Plus Jakarta Sans"';
+                ctx.fillStyle = '#1E293B';
+                ctx.fillText('Telah menyelesaikan modul', canvas.width / 2, 350);
+                ctx.font = 'bold 32px "Plus Jakarta Sans"';
+                ctx.fillText(`"${moduleName}"`, canvas.width / 2, 400);
+                ctx.font = '18px "Plus Jakarta Sans"';
+                ctx.fillText(`Pada tanggal ${new Date().toLocaleDateString('id-ID')}`, canvas.width / 2, 480);
+                const link = document.createElement('a');
+                link.download = `sertifikat-${moduleName.replace(/\s+/g, '-')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }
+        };
+        berajah.init();
+        const semeton = {
+            loginModal: document.getElementById('ts-login-modal'),
+            loginForm: document.getElementById('ts-login-form'),
+            userNameInput: document.getElementById('ts-login-name'),
+            userEmailInput: document.getElementById('ts-login-email'),
+            userBadgeContainer: document.getElementById('ts-user-badge-container'),
+            commentBtns: document.querySelectorAll('.ts-comment-btn'),
+            likeBtns: document.querySelectorAll('.ts-kisah-reaksi button'),
+
+            init() {
+                this.loginModal.addEventListener('click', (e) => {
+                    if(e.target === this.loginModal) this.closeLoginModal();
+                });
+                this.loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleLogin();
+                });
+                this.commentBtns.forEach(btn => btn.addEventListener('click', (e) => this.handleComment(e)));
+                this.likeBtns.forEach(btn => btn.addEventListener('click', (e) => this.handleLike(e)));
+                this.loadUser();
+                this.renderAllComments();
+                this.loadAllLikes();
+            },
+            
+            openLoginModal() { this.loginModal.classList.add('ts-active'); },
+            closeLoginModal() { this.loginModal.classList.remove('ts-active'); },
+
+            handleLogin() {
+                const user = { name: this.userNameInput.value, email: this.userEmailInput.value };
+                if (!user.name || !user.email) return;
+                ls.set('ts:user', user);
+                this.displayUserBadge(user);
+                this.closeLoginModal();
+            },
+
+            loadUser() {
+                const user = ls.get('ts:user');
+                if(user) this.displayUserBadge(user);
+            },
+            
+            displayUserBadge(user) {
+                this.userBadgeContainer.innerHTML = `<span class="ts-user-badge">Login sebagai: ${user.name}</span>`;
+            },
+            
+            handleComment(e) {
+                const user = ls.get('ts:user');
+                if(!user) { this.openLoginModal(); return; }
+                const threadCard = e.target.closest('.card');
+                const threadId = threadCard.dataset.threadId;
+                const input = document.getElementById(`ts-comment-input-${threadId}`);
+                const text = input.value.trim();
+                if (!text) return;
+                const comments = ls.get(`ts:semeton:comments:${threadId}`, []);
+                comments.push({ user: user.name, text });
+                ls.set(`ts:semeton:comments:${threadId}`, comments);
+                this.renderComments(threadId);
+                input.value = '';
+            },
+
+            renderComments(threadId) {
+                const comments = ls.get(`ts:semeton:comments:${threadId}`, []);
+                const list = document.getElementById(`ts-comment-list-${threadId}`);
+                list.innerHTML = comments.map(c => `
+                    <div class="ts-comment">
+                        <p><strong class="ts-comment-author">${c.user}:</strong> ${c.text}</p>
+                    </div>`).join('');
+            },
+
+            renderAllComments() {
+                document.querySelectorAll('[data-thread-id]').forEach(card => {
+                    this.renderComments(card.dataset.threadId);
+                });
+            },
+
+            handleLike(e) {
+                const button = e.currentTarget;
+                const storyCard = button.closest('.card');
+                const storyId = storyCard.dataset.storyId;
+                const countSpan = button.querySelector('span');
+                let likes = ls.get(`ts:semeton:likes:${storyId}`, { count: 0, liked: false });
+                if (likes.liked) {
+                    likes.count--;
+                    likes.liked = false;
+                    button.classList.remove('ts-liked');
+                } else {
+                    likes.count++;
+                    likes.liked = true;
+                    button.classList.add('ts-liked');
+                }
+                countSpan.textContent = likes.count;
+                ls.set(`ts:semeton:likes:${storyId}`, likes);
+            },
+            
+            loadAllLikes() {
+                this.likeBtns.forEach(btn => {
+                    const storyId = btn.closest('.card').dataset.storyId;
+                    const likes = ls.get(`ts:semeton:likes:${storyId}`, { count: 0, liked: false });
+                    btn.querySelector('span').textContent = likes.count;
+                    if(likes.liked) btn.classList.add('ts-liked');
+                });
+            }
+        };
+        semeton.init();
+        const paonta = {
+            plannerBtn: document.getElementById('ts-planner-btn'),
+            plannerBudget: document.getElementById('ts-planner-budget'),
+            plannerAnggota: document.getElementById('ts-planner-anggota'),
+            plannerHasil: document.getElementById('ts-planner-hasil'),
+            plannerCetakBtn: document.getElementById('ts-planner-cetak-btn'),
+            resepDetailModal: document.getElementById('ts-resep-detail-modal'),
+            resepDetailContent: document.getElementById('ts-resep-detail-content'),
+            resepCloseBtn: document.getElementById('ts-resep-close-btn'),
+            lihatResepBtns: document.querySelectorAll('.ts-lihat-resep-btn'),
+            
+            resepData: {
+                1: { id: 1, name: 'Beberuk Terong Ikan Tongkol', bahan: ['2 buah terong ungu', '1 ekor ikan tongkol', '5 buah cabai rawit', '1 siung bawang putih', '1 sdt terasi', 'Garam & Gula'], langkah: '1. Bakar terong dan ikan. 2. Suwir ikan. 3. Ulek semua bumbu. 4. Campurkan semua bahan.' , gizi: '250 Kalori, 15g Protein', higienitas: 'Cuci tangan sebelum memasak.'},
+                2: { id: 2, name: 'Sayur Ares Khas Lombok', bahan: ['1 batang pisang muda (ares)', '250g daging ayam/bebek', 'Santan', 'Bumbu lengkap (basa genep)'], langkah: '1. Potong tipis ares, remas dengan garam. 2. Tumis bumbu hingga harum. 3. Masukkan daging, masak hingga matang. 4. Tambahkan ares dan santan, masak hingga meresap.', gizi: '180 Kalori, 12g Protein', higienitas: 'Pastikan santan dimasak hingga matang sempurna.'}
+            },
+            
+            init() {
+                this.plannerBtn.addEventListener('click', () => this.buatMenu());
+                this.lihatResepBtns.forEach(btn => btn.addEventListener('click', (e) => this.showResepDetail(e)));
+                this.resepCloseBtn.addEventListener('click', () => this.closeResepDetail());
+                this.resepDetailModal.addEventListener('click', (e) => { if (e.target === this.resepDetailModal) this.closeResepDetail(); });
+                this.plannerCetakBtn.addEventListener('click', () => window.print());
+                this.loadPlan();
+            },
+            
+            buatMenu() {
+                const budget = parseFloat(this.plannerBudget.value);
+                const anggota = parseInt(this.plannerAnggota.value, 10);
+                if (!budget || !anggota) { alert('Isi budget dan jumlah anggota.'); return; }
+                const hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+                const menu = [this.resepData[1], this.resepData[2]];
+                let plan = [];
+                for (let i = 0; i < 7; i++) {
+                    plan.push({ hari: hari[i], menu: menu[i % 2].name, biaya: Math.round(10000 + Math.random() * 5000) });
+                }
+                this.renderPlan(plan);
+                ls.set('ts:paonta:plan', plan);
+            },
+            
+            renderPlan(plan) {
+                const totalBiaya = plan.reduce((sum, item) => sum + item.biaya, 0);
+                let tableHTML = `<table class="ts-meal-plan-table">
+                    <thead><tr><th>Hari</th><th>Menu Rekomendasi</th><th>Estimasi Biaya</th></tr></thead><tbody>`;
+                plan.forEach(item => {
+                    tableHTML += `<tr><td>${item.hari}</td><td>${item.menu}</td><td>Rp ${item.biaya.toLocaleString('id-ID')}</td></tr>`;
+                });
+                tableHTML += `</tbody><tfoot><tr><td colspan="2" class="font-bold">Total Estimasi</td><td class="font-bold">Rp ${totalBiaya.toLocaleString('id-ID')}</td></tr></tfoot></table>`;
+                this.plannerHasil.innerHTML = tableHTML;
+                this.plannerCetakBtn.classList.remove('ts-hidden');
+            },
+
+            loadPlan() {
+                const plan = ls.get('ts:paonta:plan');
+                if (plan) this.renderPlan(plan);
+            },
+
+            showResepDetail(e) {
+                const recipeId = e.target.closest('.card').dataset.recipeId;
+                const data = this.resepData[recipeId];
+                if (!data) return;
+                this.resepDetailContent.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-4">${data.name}</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div><h4 class="font-bold mb-2">Bahan-bahan</h4><ul class="list-disc list-inside">${data.bahan.map(b => `<li>${b}</li>`).join('')}</ul></div>
+                        <div><h4 class="font-bold mb-2">Langkah Memasak</h4><p>${data.langkah}</p></div>
+                    </div>
+                    <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                        <p><strong>Nilai Gizi:</strong> ${data.gizi}</p>
+                        <p><strong>Tips Higienitas:</strong> ${data.higienitas}</p>
+                    </div>
+                    <button id="ts-simpan-favorit-btn" data-id="${data.id}" class="ts-btn mt-6 w-full" style="background-color: var(--emas);">Simpan Favorit</button>
+                `;
+                this.resepDetailModal.classList.add('ts-active');
+                document.getElementById('ts-simpan-favorit-btn').addEventListener('click', (ev) => this.simpanFavorit(ev));
+            },
+
+            closeResepDetail() {
+                this.resepDetailModal.classList.remove('ts-active');
+            },
+            
+            simpanFavorit(e) {
+                const recipeId = e.target.dataset.id;
+                let favs = ls.get('ts:paonta:favs', []);
+                if (!favs.includes(recipeId)) {
+                    favs.push(recipeId);
+                    ls.set('ts:paonta:favs', favs);
+                    alert('Resep disimpan ke favorit!');
+                } else {
+                    alert('Resep ini sudah ada di favorit.');
+                }
+            }
+        };
+        paonta.init();
+        const emergency = {
+            shareLocationBtn: document.getElementById('ts-share-location-btn'),
+            poisonGuideBtn: document.getElementById('ts-poison-guide-btn'),
+            poisonModal: document.getElementById('ts-panduan-keracunan-modal'),
+            poisonCloseBtn: document.getElementById('ts-keracunan-close-btn'),
+            
+            init() {
+                this.shareLocationBtn.addEventListener('click', () => this.shareLocation());
+                this.poisonGuideBtn.addEventListener('click', () => this.poisonModal.classList.add('ts-active'));
+                this.poisonCloseBtn.addEventListener('click', () => this.poisonModal.classList.remove('ts-active'));
+                this.poisonModal.addEventListener('click', (e) => { if(e.target === this.poisonModal) this.poisonModal.classList.remove('ts-active'); });
+            },
+            
+            shareLocation() {
+                const lat = -8.5833;
+                const lon = 116.1167;
+                const text = encodeURIComponent(`Lokasi darurat: https://www.google.com/maps?q=${lat},${lon}`);
+                window.open(`https://wa.me/?text=${text}`, '_blank');
+            }
+        };
+        emergency.init();
+        
+        const asriAI = {
+            toggleBtn: document.getElementById('ts-asri-toggle'),
+            panel: document.getElementById('ts-asri-panel'),
+            messages: document.getElementById('ts-chat-messages'),
+            input: document.getElementById('ts-user-input'),
+            sendBtn: document.getElementById('ts-send-btn'),
+            recoCards: document.querySelectorAll('.ts-chat-reco-card'),
+            
+            init() {
+                this.toggleBtn.addEventListener('click', () => this.togglePanel());
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.input.addEventListener('keydown', (e) => { if(e.key === 'Enter') this.sendMessage(); });
+                this.recoCards.forEach(card => card.addEventListener('click', () => {
+                    this.input.value = card.dataset.prompt;
+                    this.sendMessage();
+                }));
+                this.loadChatHistory();
+            },
+            
+            togglePanel() {
+                this.panel.classList.toggle('ts-active');
+                if (this.panel.classList.contains('ts-active')) {
+                  this.input.focus();
+                }
+            },
+            
+            sendMessage() {
+                const text = this.input.value.trim();
+                if (!text) return;
+                
+                this.addMessageToPanel(text, 'user');
+                this.saveMessageToHistory(text, 'user');
+                this.input.value = '';
+                
+                setTimeout(() => {
+                    const response = this.getAIResponse(text);
+                    this.addMessageToPanel(response, 'ai');
+                    this.saveMessageToHistory(response, 'ai');
+                }, 1000);
+            },
+            
+            addMessageToPanel(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+                messageDiv.textContent = text;
+                this.messages.appendChild(messageDiv);
+                this.messages.scrollTop = this.messages.scrollHeight;
+            },
+
+            saveMessageToHistory(text, sender) {
+                const history = ls.get('ts:asri:history', []);
+                history.push({ text, sender });
+                ls.set('ts:asri:history', history.slice(-20)); // Simpan 20 pesan terakhir
+            },
+
+            loadChatHistory() {
+                this.messages.innerHTML = '';
+                const history = ls.get('ts:asri:history', []);
+                if (history.length === 0) {
+                    this.addMessageToPanel('Halo, saya Asri. Ada yang bisa saya bantu?', 'ai');
+                } else {
+                    history.forEach(msg => this.addMessageToPanel(msg.text, msg.sender));
+                }
+            },
+
+            getAIResponse(userText) {
+                userText = userText.toLowerCase();
+                if (userText.includes("mpasi") || userText.includes("makanan bayi")) { return "MPASI sebaiknya dimulai saat bayi berusia 6 bulan. Pastikan teksturnya sesuai usia dan perkenalkan satu jenis makanan baru setiap 3-4 hari untuk memantau alergi. Mau resep MPASI dari bahan lokal seperti ikan tongkol atau daun kelor?"; }
+                else if (userText.includes("stunting")) { return "Stunting adalah kondisi gagal tumbuh pada anak akibat kekurangan gizi kronis. Pencegahannya sangat penting, terutama pada 1000 Hari Pertama Kehidupan. Pemantauan rutin di GiziNusa dapat membantu deteksi dini."; }
+                else if (userText.includes("resep")) { return "Tentu! Anda bisa cek fitur Paonta untuk Buku Resep Sasak. Di sana ada banyak resep lokal bergizi seperti Pelecing Kangkung, Sayur Ares, dan aneka olahan ikan yang kaya protein."; }
+                return "Maaf, saya masih belajar. Coba tanyakan tentang MPASI, stunting, atau resep makanan lokal NTB.";
+            }
+        };
+        asriAI.init();
+    });
+  </script>
+
+  <!-- =============================================== -->
+  <!-- JAVASCRIPT BARU UNTUK PENGATURAN -->
+  <!-- =============================================== -->
+  <script id="ts-settings-script">
+    document.addEventListener('DOMContentLoaded', function() {
+        const settingsManager = {
+            // Kamus untuk semua teks yang bisa diterjemahkan
+            translations: {
+                // Navigasi Utama & Judul Halaman
+                beranda: { id: "Beranda", en: "Home", sas: "Bero" },
+                gizinusa: { id: "GiziNusa", en: "GiziNusa", sas: "GiziNusa" },
+                gensolah: { id: "GenSolah", en: "GenSolah", sas: "GenSolah" },
+                berajah: { id: "Berajah", en: "Learn", sas: "Berajah" },
+                semeton: { id: "Semeton", en: "Community", sas: "Semeton" },
+                paonta: { id: "Paonta", en: "Kitchen", sas: "Paonta" },
+                pengaturan: { id: "Pengaturan", en: "Settings", sas: "Pengaturan" },
+                asriai: { id: "Tanya Asri AI", en: "Ask Asri AI", sas: "Taken Asri AI" },
+                beranda_title: { id: "Beranda", en: "Dashboard", sas: "Bero" },
+                beranda_subtitle: { id: "Selamat datang, Bunda Hebat!", en: "Welcome, Super Mom!", sas: "Selamet dateng, Inaq Keren!" },
+                gizinusa_title: { id: "GiziNusa", en: "GiziNusa", sas: "GiziNusa" },
+                gizinusa_subtitle: { id: "Pantau tumbuh kembang anak.", en: "Monitor child's growth.", sas: "Pantau tumbuh kembang anak." },
+                gensolah_title: { id: "GenSolah", en: "GenSolah", sas: "GenSolah" },
+                gensolah_subtitle: { id: "Gaya hidup sehat remaja NTB.", en: "Healthy lifestyle for NTB teens.", sas: "Gaya hidup sehat dedare/terune NTB." },
+                berajah_title: { id: "Berajah", en: "Learn", sas: "Berajah" },
+                berajah_subtitle: { id: "Belajar jadi orang tua hebat.", en: "Learn to be a great parent.", sas: "Belajar jari dengan toaq solah." },
+                semeton_title: { id: "Semeton", en: "Community", sas: "Semeton" },
+                semeton_subtitle: { id: "Berbagi cerita dan inspirasi.", en: "Share stories and inspiration.", sas: "Berbagi cerite dait inspirasi." },
+                paonta_title: { id: "Paonta", en: "Kitchen", sas: "Paonta" },
+                paonta_subtitle: { id: "Resep lokal bergizi & murah.", en: "Nutritious & cheap local recipes.", sas: "Resep lokal bergizi & murah." },
+                asriai_title: { id: "Asri AI", en: "Asri AI", sas: "Asri AI" },
+                asriai_subtitle: { id: "Tanya apa saja seputar gizi.", en: "Ask anything about nutrition.", sas: "Taken napi mawon soal gizi." },
+                pengaturan_title: { id: "Pengaturan Aplikasi", en: "App Settings", sas: "Pengaturan Aplikasi" },
+                pengaturan_subtitle: { id: "Sesuaikan aplikasi dengan kebutuhan Anda.", en: "Customize the app to your needs.", sas: "Sesuaikn aplikasi kadu kebutuhan side." },
+                
+                // Header
+                masuk: { id: "Masuk", en: "Login", sas: "Masuk" },
+                daftar: { id: "Daftar", en: "Sign Up", sas: "Daftar" },
+
+                // Beranda
+                hero_title: { id: "Tumbuh Sehat, Cerdas, dan Bahagia Bersama <span style=\"color: var(--emas);\">tunassolah.id</span>.", en: "Grow Healthy, Smart, and Happy with <span style=\"color: var(--emas);\">tunassolah.id</span>.", sas: "Tumbuh Sehat, Pinter, dait Bahagia Bareng <span style=\"color: var(--emas);\">tunassolah.id</span>." },
+                hero_subtitle: { id: "Platform digital NTB untuk memantau gizi, belajar pola hidup sehat, dan membangun komunitas keluarga peduli stunting.", en: "NTB's digital platform to monitor nutrition, learn healthy habits, and build a stunting-aware family community.", sas: "Platform digital NTB jari pantau gizi, berajah pola hidup sehat, dait bangun komunitas keluarge peduli stunting." },
+                pantauGizi: { id: "Pantau Gizi Sekarang", en: "Track Nutrition Now", sas: "Pantau Gizi Jelo Niki" },
+                mulaiBelajar: { id: "Mulai Belajar di Berajah", en: "Start Learning in Berajah", sas: "Mulai Berajah" },
+                visi_title: { id: "Visi Kami", en: "Our Vision", sas: "Visi Mami" },
+                visi_text: { id: "Mewujudkan NTB bebas stunting melalui sinergi teknologi modern dan kearifan budaya lokal Sasak.", en: "Realizing a stunting-free NTB through the synergy of modern technology and Sasak local wisdom.", sas: "Mewujudkn NTB bebas stunting langan sinergi teknologi modern dait kearifan budaye lokal Sasak." },
+                misi_title: { id: "Misi Kami", en: "Our Mission", sas: "Misi Mami" },
+                misi_1: { id: "Pemantauan gizi anak yang mudah, akurat, dan terpusat.", en: "Easy, accurate, and centralized child nutrition monitoring.", sas: "Pemantauan gizi anak saq alus, akurat, dait terpusat." },
+                misi_2: { id: "Edukasi keluarga tentang 1000 HPK berbasis konten lokal.", en: "Family education about 1000 HPK based on local content.", sas: "Edukasi keluarge soal 1000 HPK berbasis konten lokal." },
+                misi_3: { id: "Membentuk gaya hidup sehat dan aktif untuk Gen Z.", en: "Shaping a healthy and active lifestyle for Gen Z.", sas: "Membentuk gaya hidup sehat dait aktif jari Gen Z." },
+                misi_4: { id: "Mengoptimalkan pemanfaatan pangan lokal NTB.", en: "Optimizing the use of NTB local food.", sas: "Mengoptimalkn pemanfaatan pangan lokal NTB." },
+                misi_5: { id: "Menyediakan sistem tanggap darurat gizi yang responsif.", en: "Providing a responsive nutrition emergency response system.", sas: "Nyediakn sistem tanggap darurat gizi saq responsif." },
+                misi_6: { id: "Memanfaatkan AI untuk rekomendasi gizi personal.", en: "Utilizing AI for personal nutrition recommendations.", sas: "Manfaatkn AI jari rekomendasi gizi personal." },
+                stat_1: { id: "Keluarga Terdaftar", en: "Registered Families", sas: "Keluarge Terdaftar" },
+                stat_2: { id: "Kader Aktif Terhubung", en: "Active Cadres Connected", sas: "Kader Aktif Terhubung" },
+                stat_3: { id: "Peningkatan Kesadaran Gizi", en: "Increase in Nutrition Awareness", sas: "Peningkatan Kesadaran Gizi" },
+                
+                // PIN Overlay
+                pin_masukkan: { id: "Masukkan PIN", en: "Enter PIN", sas: "Pamasuk PIN" },
+                pin_info: { id: "Aplikasi ini dilindungi.", en: "This app is locked.", sas: "Aplikasi niki tejage." },
+                pin_salah: { id: "PIN salah, coba lagi.", en: "Wrong PIN, try again.", sas: "PIN salaq, cobe malik." },
+
+                // Pengaturan (Detail)
+                set_profil: { id: "Profil Pengguna", en: "User Profile", sas: "Profil Pengguna" },
+                set_bahasa: { id: "Bahasa", en: "Language", sas: "Bahase" },
+                set_privasi: { id: "Privasi & Keamanan", en: "Privacy & Security", sas: "Privasi & Keamanan" },
+                set_notif: { id: "Notifikasi", en: "Notifications", sas: "Notifikasi" },
+                set_akses: { id: "Aksesibilitas", en: "Accessibility", sas: "Aksesibilitas" },
+                set_tema: { id: "Tema", en: "Theme", sas: "Tema" },
+                set_cadangan: { id: "Cadangan Data", en: "Data Backup", sas: "Cadangan Data" },
+
+                set_profil_title: { id: "Profil Pengguna", en: "User Profile", sas: "Profil Pengguna" },
+                set_profil_nama: { id: "Nama", en: "Name", sas: "Nami" },
+                set_profil_email: { id: "Email", en: "Email", sas: "Email" },
+                set_profil_wa: { id: "Nomor WhatsApp", en: "WhatsApp Number", sas: "Nomer WhatsApp" },
+                set_profil_peran: { id: "Peran", en: "Role", sas: "Peran" },
+                peran_ortu: { id: "Orang Tua", en: "Parent", sas: "Dengan Toaq" },
+                peran_kader: { id: "Kader", en: "Cadre", sas: "Kader" },
+                peran_nakes: { id: "Tenaga Kesehatan", en: "Health Worker", sas: "Tenaga Kesehatan" },
+                peran_remaja: { id: "Remaja", en: "Teenager", sas: "Dedare/Terune" },
+                set_profil_kec: { id: "Kecamatan", en: "District", sas: "Kecamatan" },
+                set_profil_desa: { id: "Desa", en: "Village", sas: "Desa" },
+                set_profil_pin: { id: "PIN Aplikasi (4 digit, untuk keamanan)", en: "App PIN (4 digits, for security)", sas: "PIN Aplikasi (4 digit, jari keamanan)" },
+                simpan_profil: { id: "Simpan Profil", en: "Save Profile", sas: "Simpen Profil" },
+
+                set_bahasa_title: { id: "Bahasa Aplikasi", en: "App Language", sas: "Bahase Aplikasi" },
+
+                set_privasi_title: { id: "Privasi & Keamanan", en: "Privacy & Security", sas: "Privasi & Keamanan" },
+                set_privasi_kunci: { id: "Kunci Aplikasi dengan PIN", en: "Lock App with PIN", sas: "Kunci Aplikasi kadu PIN" },
+                set_privasi_info: { id: "Jika aktif, Anda akan diminta memasukkan PIN setiap kali membuka aplikasi. Pastikan Anda sudah mengatur PIN di Profil Pengguna.", en: "If active, you will be asked for a PIN every time you open the app. Make sure you have set a PIN in User Profile.", sas: "Lamun aktif, side gen tetaken PIN sebilang bukak aplikasi. Pastikn side sampun atur PIN leq Profil Pengguna." },
+                
+                set_notif_title: { id: "Preferensi Notifikasi", en: "Notification Preferences", sas: "Preferensi Notifikasi" },
+                set_notif_1: { id: "Pengingat ukur & timbang bulanan", en: "Monthly measurement reminder", sas: "Pengingat ukur & timbang bulanan" },
+                set_notif_2: { id: "Pengingat jadwal imunisasi", en: "Immunization schedule reminder", sas: "Pengingat jadwal imunisasi" },
+                set_notif_3: { id: "Pengingat TTD remaja putri", en: "TTD reminder for female teens", sas: "Pengingat TTD dedare" },
+                set_notif_info: { id: "Aplikasi ini tidak mengirim notifikasi push. Fitur ini hanya menyimpan preferensi Anda untuk integrasi di masa mendatang.", en: "This app does not send push notifications. This feature only saves your preferences for future integration.", sas: "Aplikasi niki ndaq ngirim notifikasi push. Fitur niki cuman nyimpen preferensi side jari integrasi saq gen dateng." },
+
+                set_akses_title: { id: "Aksesibilitas", en: "Accessibility", sas: "Aksesibilitas" },
+                set_akses_font: { id: "Ukuran font besar", en: "Large font size", sas: "Ukuran huruf beleq" },
+                set_akses_animasi: { id: "Kurangi animasi", en: "Reduce motion", sas: "Kurngin animasi" },
+
+                set_tema_title: { id: "Tema Tampilan", en: "Display Theme", sas: "Tema Tampilan" },
+                set_tema_sistem: { id: "Ikuti sistem", en: "Follow system", sas: "Turut sistem" },
+                set_tema_terang: { id: "Terang", en: "Light", sas: "Terang" },
+                set_tema_gelap: { id: "Gelap", en: "Dark", sas: "Peteng" },
+
+                set_cadangan_title: { id: "Cadangan Data Lokal", en: "Local Data Backup", sas: "Cadangan Data Lokal" },
+                set_cadangan_info: { id: "Ekspor data Anda sebagai file cadangan, atau impor data dari file yang sudah ada. Semua data tersimpan di perangkat Anda, bukan di server kami.", en: "Export your data as a backup file, or import data from an existing file. All data is stored on your device, not on our server.", sas: "Ekspor data side jari file cadangan, atao impor data leman file saq sampun araq. Selapuq data tesimpen leq perangkat side, ndaq leq server mami." },
+                set_cadangan_ekspor: { id: "Ekspor Data (JSON)", en: "Export Data (JSON)", sas: "Ekspor Data (JSON)" },
+                set_cadangan_impor: { id: "Impor Data (JSON)", en: "Import Data (JSON)", sas: "Impor Data (JSON)" },
+
+                // Footer
+                footer_desc: { id: "Platform digital dari NTB untuk masa depan generasi yang lebih sehat, cerdas, dan bebas stunting.", en: "A digital platform from NTB for a healthier, smarter, and stunting-free future generation.", sas: "Platform digital leman NTB jari masa depan generasi saq lebih sehat, pinter, dait bebas stunting." },
+                footer_tautan: { id: "Tautan Cepat", en: "Quick Links", sas: "Tautan Cepat" },
+                footer_tentang: { id: "Tentang Kami", en: "About Us", sas: "Tentang Mami" },
+                footer_bantuan: { id:t: "Pusat Bantuan", en: "Help Center", sas: "Pusat Bantuan" },
+                footer_privasi: { id: "Kebijakan Privasi", en: "Privacy Policy", sas: "Kebijakan Privasi" },
+                footer_bahasa: { id: "Bahasa", en: "Language", sas: "Bahase" },
+                footer_copy: { id: "© 2025 tunassolah.id – Dibangun oleh Generasi NTB untuk Masa Depan Tanpa Stunting.", en: "© 2025 tunassolah.id – Built by NTB's Generation for a Future Without Stunting.", sas: "© 2025 tunassolah.id – Tebaing oleh Generasi NTB jari Masa Depan Tanpa Stunting." }
+            },
+
+            // PIN Lock
+            pinOverlay: document.getElementById('ts-pin-overlay'),
+            pinInput: document.getElementById('ts-pin-input'),
+            pinError: document.getElementById('ts-pin-error'),
+
+            // Settings Navigation
+            settingsNav: document.getElementById('ts-settings-nav'),
+            settingsPanes: document.querySelectorAll('.ts-settings-content'),
+
+            // Form Elements
+            profileForm: {
+                name: document.getElementById('profile-name'),
+                email: document.getElementById('profile-email'),
+                whatsapp: document.getElementById('profile-whatsapp'),
+                role: document.getElementById('profile-role'),
+                kecamatan: document.getElementById('profile-kecamatan'),
+                desa: document.getElementById('profile-desa'),
+                pin: document.getElementById('profile-pin'),
+                saveBtn: document.getElementById('ts-save-profile-btn')
+            },
+            langRadios: document.querySelectorAll('input[name="lang"]'),
+            privacyLock: document.getElementById('privacy-lock'),
+            accessFont: document.getElementById('access-font'),
+            accessMotion: document.getElementById('access-motion'),
+            themeRadios: document.querySelectorAll('input[name="theme"]'),
+            exportBtn: document.getElementById('ts-export-btn'),
+            importBtn: document.getElementById('ts-import-btn'),
+
+            // Kunci Penyimpanan Lokal (LocalStorage Keys)
+            config: {
+                user: 'ts:settings:user',
+                lang: 'ts:settings:language',
+                pinEnabled: 'ts:settings:pinEnabled',
+                fontSize: 'ts:settings:fontSize',
+                motion: 'ts:settings:motion',
+                theme: 'ts:settings:theme',
+                allData: 'ts:allData'
+            },
+
+            // Inisialisasi
+            init() {
+                // Tambahkan 'window.ts.settingsManager = this;' agar bisa diakses global
+                window.ts.settingsManager = this; 
+                
+                this.loadSettings();
+                this.bindEvents();
+                this.checkPinLock();
+            },
+            
+            // Memuat semua pengaturan dari LocalStorage
+            loadSettings() {
+                // 1. Profil Pengguna
+                const user = this.getSetting(this.config.user, {});
+                if (user) {
+                    this.profileForm.name.value = user.name || '';
+                    this.profileForm.email.value = user.email || '';
+                    this.profileForm.whatsapp.value = user.whatsapp || '';
+                    this.profileForm.role.value = user.role || 'ortu';
+                    this.profileForm.kecamatan.value = user.kecamatan || '';
+                    this.profileForm.desa.value = user.desa || '';
+                    this.profileForm.pin.value = user.pin || '';
+                }
+
+                // 2. Bahasa
+                const lang = this.getSetting(this.config.lang, 'id');
+                const langRadio = document.querySelector(`input[name="lang"][value="${lang}"]`);
+                if (langRadio) langRadio.checked = true;
+                this.applyLanguage(lang);
+
+                // 3. Privasi
+                const pinEnabled = this.getSetting(this.config.pinEnabled, false);
+                this.privacyLock.checked = pinEnabled;
+
+                // 4. Aksesibilitas
+                const fontSize = this.getSetting(this.config.fontSize, false);
+                this.accessFont.checked = fontSize;
+                this.applyFontSize(fontSize);
+                
+                const motion = this.getSetting(this.config.motion, false);
+                this.accessMotion.checked = motion;
+                this.applyMotion(motion);
+
+                // 5. Tema
+                const theme = this.getSetting(this.config.theme, 'system');
+                const themeRadio = document.querySelector(`input[name="theme"][value="${theme}"]`);
+                if (themeRadio) themeRadio.checked = true;
+                this.applyTheme(theme);
+            },
+
+            // Menghubungkan semua event listener
+            bindEvents() {
+                // Navigasi Pengaturan
+                this.settingsNav.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    
+                    this.settingsNav.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    this.settingsPanes.forEach(pane => pane.classList.remove('active'));
+                    const targetPane = document.getElementById(button.dataset.target);
+                    if (targetPane) targetPane.classList.add('active');
+                });
+                
+                // Simpan Profil
+                this.profileForm.saveBtn.addEventListener('click', () => this.saveProfile());
+
+                // Ganti Bahasa
+                this.langRadios.forEach(radio => radio.addEventListener('change', (e) => this.saveLanguage(e.target.value)));
+
+                // Kunci Privasi
+                this.privacyLock.addEventListener('change', (e) => this.savePinEnabled(e.target.checked));
+                
+                // PIN Input Logic
+                this.pinInput.addEventListener('input', (e) => this.validatePin(e));
+                this.pinInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') this.validatePin(e); });
+
+
+                // Aksesibilitas
+                this.accessFont.addEventListener('change', (e) => this.saveFontSize(e.target.checked));
+                this.accessMotion.addEventListener('change', (e) => this.saveMotion(e.target.checked));
+                
+                // Tema
+                this.themeRadios.forEach(radio => radio.addEventListener('change', (e) => this.saveTheme(e.target.value)));
+
+                // Backup
+                this.exportBtn.addEventListener('click', () => this.exportData());
+                this.importBtn.addEventListener('click', () => this.importData());
+            },
+
+            // ===================================
+            // Fungsi-Fungsi Aksi (Simpan & Terapkan)
+            // ===================================
+
+            // 1. Profil
+            saveProfile() {
+                const user = {
+                    name: this.profileForm.name.value,
+                    email: this.profileForm.email.value,
+                    whatsapp: this.profileForm.whatsapp.value,
+                    role: this.profileForm.role.value,
+                    kecamatan: this.profileForm.kecamatan.value,
+                    desa: this.profileForm.desa.value,
+                    pin: this.profileForm.pin.value.replace(/\D/g, '') // Hanya simpan angka
+                };
+                
+                if (user.pin.length > 0 && user.pin.length !== 4) {
+                    alert("PIN harus 4 digit angka.");
+                    return;
+                }
+                
+                this.setSetting(this.config.user, user);
+                alert("Profil berhasil disimpan!");
+            },
+
+            // 2. Bahasa
+            saveLanguage(lang) {
